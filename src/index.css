@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -36,4 +36,14 @@
   @media print {
     display: none !important;
   }
+}
+
+/* Urdu text: Arabic-script fonts, no letter-spacing (it breaks the joined letters),
+   no forced upper-casing, and a little more line height for the taller glyphs. */
+.font-urdu {
+  font-family: "Noto Naskh Arabic", "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Segoe UI", Tahoma, serif;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  font-style: normal !important;
+  line-height: 1.7;
 }
