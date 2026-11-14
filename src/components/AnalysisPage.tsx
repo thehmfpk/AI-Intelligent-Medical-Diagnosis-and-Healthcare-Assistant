@@ -206,14 +206,23 @@
 
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Check, BrainCircuit, Activity, Info, Filter, Sparkles, Terminal } from 'lucide-react';
+import { Search, X, Check, BrainCircuit, Activity, Info, Filter, Sparkles, Terminal, MessageCircle } from 'lucide-react';
 import { symptomCategories } from '../data/medicalData';
+import { DisplayMode } from '../data/symptomTranslations';
+import { symptomMatchesQuery } from '../lib/symptomMatcher';
+import SymptomName from './SymptomName';
+import LanguageToggle from './LanguageToggle';
 
 interface AnalysisPageProps {
   onAnalyze: (selectedSymptoms: string[]) => void;
+  /** Which language(s) symptom names are shown in. */
+  displayMode: DisplayMode;
+  onDisplayModeChange: (mode: DisplayMode) => void;
+  /** Jump to the conversational assistant. */
+  onOpenChat: () => void;
 }
 
-const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze }) => {
+const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, displayMode, onDisplayModeChange, onOpenChat }) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -228,7 +237,7 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze }) => {
     let result: { category: string, symptoms: string[] }[] = [];
     
     Object.entries(symptomCategories).forEach(([category, symptoms]) => {
-      const matched = symptoms.filter(s => s.toLowerCase().includes(search.toLowerCase()));
+      const matched = symptoms.filter(s => symptomMatchesQuery(s, search));
       if (matched.length > 0) {
         if (!activeCategory || activeCategory === category) {
           result.push({ category, symptoms: matched });
@@ -292,12 +301,25 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze }) => {
             
             {/* Filter and Input Controls */}
             <div className="space-y-6">
+              {/* Language switch + shortcut to the chat assistant */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <LanguageToggle mode={displayMode} onChange={onDisplayModeChange} />
+                <button
+                  type="button"
+                  onClick={onOpenChat}
+                  className="flex items-center gap-2 px-4 py-3 rounded-xl border border-cyan-500/30 bg-cyan-500/5 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-widest hover:bg-cyan-500/15 transition-all cursor-pointer"
+                >
+                  <MessageCircle size={14} /> Talk to the assistant
+                  <span className="font-urdu text-sm normal-case tracking-normal">· اسسٹنٹ سے بات کریں</span>
+                </button>
+              </div>
+
               {/* Immersive Tech Search Bar */}
               <div className="relative group">
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-cyan-400 transition-colors" size={18} />
                 <input 
                   type="text" 
-                  placeholder="INPUT CLINICAL PATHOLOGY SYMPTOM ENGINE..."
+                  placeholder="Search symptoms in English or Urdu — fever, بخار, bukhar…"
                   className="w-full bg-zinc-950/50 border border-white/5 rounded-2xl py-5 pl-16 pr-6 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-cyan-500/30 focus:bg-black/80 transition-all font-mono tracking-wide shadow-inner"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -369,7 +391,9 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze }) => {
                             {/* Visual background tech overlay on active */}
                             {isSelected && <div className="absolute inset-0 bg-cyan-500/[0.02] pointer-events-none animate-pulse" />}
                             
-                            <span className="truncate pr-3 font-mono tracking-tight">{sym}</span>
+                            <span className="min-w-0 flex-1 pr-3 text-left">
+                              <SymptomName symptom={sym} mode={displayMode} className="font-mono tracking-tight" />
+                            </span>
                             
                             <div className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 transition-all ${
                               isSelected 
@@ -440,7 +464,9 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze }) => {
                         transition={{ duration: 0.2 }}
                         className="flex items-center justify-between p-3.5 bg-zinc-900/30 hover:bg-zinc-900/60 rounded-xl border border-white/[0.03] text-xs transition-colors"
                       >
-                        <span className="truncate mr-3 font-mono text-zinc-300 font-medium">{sym}</span>
+                        <span className="min-w-0 flex-1 mr-3">
+                          <SymptomName symptom={sym} mode={displayMode} className="font-mono text-zinc-300 font-medium" />
+                        </span>
                         <button 
                           onClick={() => toggleSymptom(sym)}
                           className="w-5 h-5 flex items-center justify-center text-zinc-600 hover:text-cyan-400 hover:bg-white/5 rounded-md transition-all"

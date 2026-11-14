@@ -7,10 +7,15 @@ import AnalysisPage from './components/AnalysisPage';
 import ResultPage from './components/ResultPage';
 import MedicationPage from './components/MedicationPage';
 import ContactPage from './components/ContactPage';
+import ChatAssistant from './components/ChatAssistant';
 import { medicalEncyclopedia, diseaseSymptomMatrix, DiseaseInfo } from './data/medicalData';
+import { DisplayMode } from './data/symptomTranslations';
+import { usePersistentState } from './lib/usePersistentState';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  // Which language(s) symptom names are shown in (shared by the symptom list and the chat).
+  const [displayMode, setDisplayMode] = usePersistentState<DisplayMode>('dr_hmf_symptom_lang', 'both');
   const [predictedDisease, setPredictedDisease] = useState<string>('');
   const [selectedDiseaseInfo, setSelectedDiseaseInfo] = useState<DiseaseInfo | null>(null);
   const [history, setHistory] = useState<{ disease: string, date: string, symptoms: number }[]>([]);
@@ -113,7 +118,28 @@ export default function App() {
               exit={{ opacity: 0, scale: 1.02 }}
               transition={{ duration: 0.4 }}
             >
-              <AnalysisPage onAnalyze={handleAnalyze} />
+              <AnalysisPage
+                onAnalyze={handleAnalyze}
+                displayMode={displayMode}
+                onDisplayModeChange={setDisplayMode}
+                onOpenChat={() => setCurrentPage('chat')}
+              />
+            </motion.div>
+          )}
+
+          {currentPage === 'chat' && (
+            <motion.div
+              key="chat"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <ChatAssistant
+                onAnalyze={handleAnalyze}
+                displayMode={displayMode}
+                onDisplayModeChange={setDisplayMode}
+              />
             </motion.div>
           )}
 

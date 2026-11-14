@@ -112,7 +112,7 @@ import React, { useState, useEffect } from 'react';
 import { Stethoscope, Menu, X, Activity, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export type Page = 'home' | 'analysis' | 'result' | 'medication' | 'contact';
+export type Page = 'home' | 'analysis' | 'chat' | 'result' | 'medication' | 'contact';
 
 interface HeaderProps {
   currentPage: Page;
@@ -133,6 +133,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
   const navItems = [
     { name: 'Overview', id: 'home' as Page },
     { name: 'Analysis', id: 'analysis' as Page },
+    { name: 'AI Chat', id: 'chat' as Page },
     { name: 'Prediction', id: 'result' as Page },
     { name: 'Treatment', id: 'medication' as Page },
     { name: 'Contact', id: 'contact' as Page },
@@ -181,7 +182,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             <button
               key={item.id}
               onClick={() => setCurrentPage(item.id)}
-              className={`relative px-6 py-2 text-[11px] font-mono uppercase tracking-[0.15em] transition-all duration-300 rounded-full ${currentPage === item.id ? 'text-black' : 'text-gray-400 hover:text-white'
+              className={`relative px-4 lg:px-6 py-2 text-[11px] font-mono uppercase tracking-[0.15em] transition-all duration-300 rounded-full ${currentPage === item.id ? 'text-black' : 'text-gray-400 hover:text-white'
                 }`}
             >
               <span className="relative z-10">{item.name}</span>
