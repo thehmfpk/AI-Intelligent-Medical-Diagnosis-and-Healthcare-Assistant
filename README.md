@@ -560,4 +560,4 @@ The project represents the integration of:
 
 This system demonstrates how AI can be utilized to create intelligent healthcare solutions capable of assisting users through symptom-based disease prediction and medical recommendation systems.
 
-The project also serves as a strong demonstration of practical AI application development in real-world healthcare environments.
+The project also serves as a strong demonstration of practical AI application development in real-world healthcare systems.
