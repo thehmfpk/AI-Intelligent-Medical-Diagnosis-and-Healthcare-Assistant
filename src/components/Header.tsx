@@ -111,6 +111,7 @@
 import React, { useState, useEffect } from 'react';
 import { Stethoscope, Menu, X, Activity, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 export type Page = 'home' | 'analysis' | 'chat' | 'result' | 'medication' | 'contact';
 
@@ -199,6 +200,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
 
         {/* --- Action Button --- */}
         <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle />
           <button
             onClick={() => setCurrentPage('analysis')}
             className="group relative px-6 py-2.5 bg-transparent overflow-hidden rounded-lg transition-all"
@@ -214,12 +216,16 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
         </div>
 
         {/* --- Mobile Menu Toggle --- */}
-        <button
-          className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Menu"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* --- Mobile Menu --- */}

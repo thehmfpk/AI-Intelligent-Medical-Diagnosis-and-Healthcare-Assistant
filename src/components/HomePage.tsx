@@ -121,7 +121,7 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onLearn }) => {
             {/* Card 1: Neural Logic */}
             <motion.div 
               variants={fadeInUp}
-              whileHover={{ y: -8, borderColor: 'rgba(6,182,212,0.4)', backgroundColor: 'rgba(7,9,15,0.7)' }}
+              whileHover={{ y: -8, borderColor: 'rgba(6,182,212,0.4)', backgroundColor: 'var(--card-hover-bg)' }}
               className="p-8 md:p-10 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-3xl md:rounded-[2.5rem] flex flex-col gap-6 transition-all duration-300 group shadow-2xl"
             >
               <Cpu className="text-cyan-400 group-hover:scale-110 transition-transform duration-300" size={32} />
@@ -132,7 +132,7 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onLearn }) => {
             {/* Card 2: Sovereign Security */}
             <motion.div 
               variants={fadeInUp}
-              whileHover={{ y: -8, borderColor: 'rgba(6,182,212,0.4)', backgroundColor: 'rgba(7,9,15,0.7)' }}
+              whileHover={{ y: -8, borderColor: 'rgba(6,182,212,0.4)', backgroundColor: 'var(--card-hover-bg)' }}
               className="p-8 md:p-10 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-3xl md:rounded-[2.5rem] flex flex-col gap-6 transition-all duration-300 group shadow-2xl"
             >
               <ShieldCheck className="text-cyan-400 group-hover:scale-110 transition-transform duration-300" size={32} />
@@ -143,7 +143,7 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onLearn }) => {
             {/* Card 3: Global Mesh */}
             <motion.div 
               variants={fadeInUp}
-              whileHover={{ y: -8, borderColor: 'rgba(6,182,212,0.4)', backgroundColor: 'rgba(7,9,15,0.7)' }}
+              whileHover={{ y: -8, borderColor: 'rgba(6,182,212,0.4)', backgroundColor: 'var(--card-hover-bg)' }}
               className="md:col-span-2 lg:col-span-1 p-8 md:p-10 bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-3xl md:rounded-[2.5rem] flex flex-col gap-6 transition-all duration-300 group shadow-2xl"
             >
               <Globe className="text-cyan-400 group-hover:scale-110 transition-transform duration-300" size={32} />
@@ -192,7 +192,7 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onLearn }) => {
               {/* Neurology */}
               <motion.div 
                 variants={scaleUp}
-                whileHover={{ y: -6, backgroundColor: 'rgba(24,24,27,0.6)', borderColor: 'rgba(6,182,212,0.2)' }}
+                whileHover={{ y: -6, backgroundColor: 'var(--card-hover-bg-soft)', borderColor: 'rgba(6,182,212,0.2)' }}
                 className="p-8 md:p-10 md:col-span-6 lg:col-span-4 bg-zinc-950 border border-white/5 rounded-3xl md:rounded-[2.5rem] transition-all duration-300 group flex flex-col justify-between shadow-inner"
               >
                 <div>
@@ -205,7 +205,7 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onLearn }) => {
               {/* Radiology */}
               <motion.div 
                 variants={scaleUp}
-                whileHover={{ y: -6, backgroundColor: 'rgba(24,24,27,0.6)', borderColor: 'rgba(6,182,212,0.2)' }}
+                whileHover={{ y: -6, backgroundColor: 'var(--card-hover-bg-soft)', borderColor: 'rgba(6,182,212,0.2)' }}
                 className="p-8 md:p-10 md:col-span-6 lg:col-span-4 bg-zinc-950 border border-white/5 rounded-3xl md:rounded-[2.5rem] transition-all duration-300 group flex flex-col justify-between shadow-inner"
               >
                 <div>
@@ -218,7 +218,7 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onLearn }) => {
               {/* Pathology */}
               <motion.div 
                 variants={scaleUp}
-                whileHover={{ y: -6, backgroundColor: 'rgba(24,24,27,0.6)', borderColor: 'rgba(6,182,212,0.2)' }}
+                whileHover={{ y: -6, backgroundColor: 'var(--card-hover-bg-soft)', borderColor: 'rgba(6,182,212,0.2)' }}
                 className="p-8 md:p-10 md:col-span-6 lg:col-span-4 bg-zinc-950 border border-white/5 rounded-3xl md:rounded-[2.5rem] transition-all duration-300 group flex flex-col justify-between shadow-inner"
               >
                 <div>
