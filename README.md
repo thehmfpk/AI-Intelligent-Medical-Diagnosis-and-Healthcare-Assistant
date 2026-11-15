@@ -1,26 +1,37 @@
 # Dr.HMF AI – Intelligent Medical Diagnosis and Healthcare Assistant
 
+**Live website:** [www.drhmf.site](https://www.drhmf.site)
+
 ## Overview
 
-Dr.HMF AI is an advanced full-stack artificial intelligence healthcare system developed to assist users in symptom-based disease prediction and intelligent healthcare guidance. The project integrates machine learning, modern frontend technologies, backend API architecture, and medical recommendation systems into a unified AI-powered healthcare platform.
+Dr.HMF AI is a full-stack artificial intelligence healthcare system that helps users describe their symptoms, get a preliminary disease prediction, and receive medication, diet, workout and precaution guidance. It combines a machine learning model, a modern React interface, a Flask prediction API and a bilingual (Urdu and English) conversational assistant that works by text and by voice.
 
-The system is designed to analyze symptoms entered by users, process them through trained machine learning models, and generate disease predictions with healthcare-related recommendations. The architecture focuses on scalability, modularity, performance, and modern software engineering practices.
+The project demonstrates the practical use of artificial intelligence in healthcare technology by bringing together data science, machine learning engineering, frontend and backend development, and an accessible, safety-aware user experience.
 
-This project demonstrates the practical implementation of Artificial Intelligence in healthcare technology by combining data science, machine learning engineering, frontend development, backend development, and intelligent medical assistance systems.
+> **Educational project.** Dr.HMF gives a preliminary, pattern-based estimate only. It is not a medical diagnosis and does not replace a licensed doctor.
+
+---
+
+# What's New
+
+- **Conversational AI chat assistant** – describe how you feel by typing or speaking and the assistant notes your symptoms, asks relevant follow-ups and runs the analysis.
+- **Urdu and English everywhere** – all 230 symptoms are shown in English, Urdu, or both, and can be searched in English, Urdu script or Roman Urdu (for example "bukhar").
+- **Voice input and voice replies** – speech recognition for Urdu (`ur-PK`) and English (`en-US`), with optional spoken replies.
+- **Built-in safety checks** – serious symptoms and self-harm wording trigger an emergency notice (Rescue 1122 / Edhi 115 in Pakistan).
+- **Light mode and dark mode** – a sun/moon toggle in the header; the choice is remembered and applied before the page paints, so there is no flash.
+- **Full project report** – a formal report covering the problem, dataset, model, design and testing.
 
 ---
 
 # Project Objectives
 
-The primary objectives of this project are:
-
-- To develop an AI-powered disease prediction system
-- To assist users in preliminary healthcare analysis
-- To build a scalable full-stack medical AI platform
-- To integrate machine learning into a real-world web application
-- To create a responsive and modern healthcare user interface
-- To demonstrate practical implementation of healthcare AI systems
-- To provide educational and research value in AI healthcare applications
+- Develop an AI-powered disease prediction system
+- Assist users in preliminary healthcare analysis
+- Build a scalable full-stack medical AI platform
+- Integrate machine learning into a real-world web application
+- Make healthcare guidance accessible in Urdu as well as English
+- Provide a responsive, modern interface in light and dark themes
+- Provide educational and research value in healthcare AI
 
 ---
 
@@ -28,65 +39,84 @@ The primary objectives of this project are:
 
 ## Intelligent Disease Prediction
 
-The system predicts diseases based on user-provided symptoms using trained machine learning models. It analyzes symptom combinations and returns the most probable disease prediction.
+Select symptoms and the system returns the most probable disease from 100 supported diseases. A trained neural network (Keras) is included in the repository and exposed through the Flask `/predict` endpoint.
 
-## AI-Powered Medical Assistance
+## Conversational AI Assistant (Urdu and English)
 
-The platform provides intelligent healthcare guidance and disease-related recommendations after generating predictions.
+The **AI Chat** page is a chat interface where users talk to the system like a doctor's assistant:
+
+- Type or tap the microphone and speak in **Urdu, Roman Urdu or English**
+- Understands natural sentences such as *"mujhe bukhar aur sar dard hai"* or *"I have a fever and cough"*
+- Recognises 230 symptoms through about 2,000 aliases, tolerates one-letter typos, and understands negation ("no fever" / "bukhar nahi hai")
+- Replies in the language the user is using and suggests related symptoms as tap-to-add chips
+- Keeps a live "Symptoms noted" list with an **Analyze** button
+- Conversation is kept for the browser session; language choice and recent results are remembered
+
+The assistant is a rule-based natural-language layer that runs in the browser (no API key, no cost, no data sent away). It is written as pure functions so it can later be swapped for an LLM.
+
+## Bilingual Symptom Display
+
+A language toggle (**English / اردو / EN + اردو**) controls how symptoms are shown on both the Analysis page and the chat. Urdu text uses a proper Arabic-script font and right-to-left layout.
+
+## Medication, Diet and Health Plans
+
+After a prediction the **Treatment** page shows the disease description, suggested medications, a diet plan, a workout plan and precautions.
+
+## Printable Medical Slip and Pharmacy Finder
+
+- **Print Protocol** produces a printable slip with the findings and plan
+- **Global Pharmacy** opens a search for pharmacies near the user for the suggested medicines
+
+## Safety Layer
+
+- 18 red-flag symptoms (for example chest pain, trouble breathing, fainting, seizures, bleeding) show an urgent warning
+- Self-harm wording shows a supportive message and emergency contacts instead of an analysis
+- Every result carries a disclaimer
+
+## Light and Dark Themes
+
+The whole interface supports both themes. The toggle sits in the header (desktop and mobile). The theme is stored in the browser and applied before first paint.
 
 ## Full Stack Architecture
 
-The application consists of:
 - React and TypeScript frontend
-- Python Flask backend
-- Machine Learning prediction pipeline
-- RESTful API communication
-
-## Responsive User Interface
-
-The frontend is designed with a modern and responsive UI to ensure accessibility and smooth interaction across different devices.
+- Express server that serves the production build
+- Python Flask backend with the trained model
+- REST API communication
 
 ## Machine Learning Pipeline
 
-The project contains a complete machine learning workflow including:
-- Data preprocessing
-- Feature engineering
-- Encoding
-- Model training
-- Model evaluation
-- Prediction generation
+Data preprocessing, encoding, model training, evaluation and prediction, documented in the included notebook.
 
 ## Modular Code Structure
 
-The codebase is organized into reusable and scalable modules to simplify maintenance and future expansion.
-
-## API-Based Communication
-
-The frontend communicates with the backend using API endpoints for real-time prediction and data exchange.
+Reusable components, a separate data layer and pure-function logic for matching and chat, so each part is easy to test and extend.
 
 ---
 
 # Technologies Used
 
-## Frontend Technologies
+## Frontend
 
-- React
+- React 19
 - TypeScript
 - Vite
-- Tailwind CSS
-- Framer Motion
+- Tailwind CSS 4
+- Motion (Framer Motion)
+- Lucide icons
+- EmailJS (contact form)
+- Web Speech API (voice input and voice output)
 
-## Backend Technologies
+## Backend
 
 - Python
 - Flask
 - REST API
-- JSON Handling
+- Express (serves the built frontend)
 
-## Machine Learning Technologies
+## Machine Learning
 
-- TensorFlow
-- Keras
+- TensorFlow / Keras
 - Scikit-learn
 - NumPy
 - Pandas
@@ -95,180 +125,174 @@ The frontend communicates with the backend using API endpoints for real-time pre
 ## Development Tools
 
 - Visual Studio Code
-- Git
-- GitHub
+- Git and GitHub
+- Vercel (hosting and preview deployments)
 
 ---
 
 # System Architecture
 
-The project follows a modular full-stack architecture.
+```text
+ User (phone or desktop)
+        │  type / speak / tap
+        ▼
+┌─────────────────────────────────────────┐
+│ Browser: React single-page app          │
+│  Pages · Chat assistant · Language and  │
+│  theme toggles · Symptom matcher ·      │
+│  Safety rules · Knowledge base          │
+└─────────────────────────────────────────┘
+        ▲ served by                 │ /predict (Flask API)
+ GitHub → Vercel                    ▼
+                         ┌─────────────────────┐
+                         │ Flask + Keras model │
+                         └─────────────────────┘
+```
 
 ## Frontend Layer
 
-The frontend handles:
-- User interaction
-- Symptom input
-- Data visualization
-- API communication
-- Result display
+- User interaction, symptom input and the chat assistant
+- Bilingual symptom display and search
+- Result and treatment pages, printing, pharmacy search
+- Theme and language preferences
 
 ## Backend Layer
 
-The backend is responsible for:
-- Receiving requests
-- Processing symptoms
-- Running prediction models
-- Returning prediction responses
-- Managing AI logic
+- Receives symptom data and runs the trained model
+- Returns `predicted_disease`, `confidence` and `medical_advice` as JSON
 
 ## Machine Learning Layer
 
-The machine learning layer performs:
-- Symptom vectorization
-- Feature encoding
-- Disease classification
-- Prediction confidence analysis
+- Symptom vectorisation (230 binary inputs)
+- Disease classification (100 classes) with a neural network
+- Label encoding and decoding
+
+> **Current state:** the live website currently picks the best match with a browser-side symptom-overlap lookup, and the trained network is packaged in the Flask backend. Connecting the website directly to `/predict` is the next planned step.
 
 ---
 
 # Project Structure
 
 ```text
-Dr-HMF-AI-Medical-Agent/
+Dr.HMF-AI-Medical-Agent/
 │
 ├── backend/
-│   ├── app.py
+│   ├── app.py                  # Flask API (/ and /predict)
 │   ├── predictor.py
 │   ├── model_loader.py
 │   ├── medical_advice.py
+│   ├── requirements.txt
 │   ├── datasets/
-│   └── models/
+│   │   ├── Diseases_and_Symptoms_dataset.csv
+│   │   └── description.csv     # descriptions, diet, precautions, workouts, medication
+│   └── model/
+│       ├── disease_model.h5
+│       ├── feature_columns.pkl
+│       └── label_encoder.pkl
 │
 ├── src/
 │   ├── components/
-│   ├── pages/
-│   ├── assets/
-│   ├── styles/
+│   │   ├── HomePage.tsx
+│   │   ├── AnalysisPage.tsx    # symptom picker, bilingual, multi-script search
+│   │   ├── ChatAssistant.tsx   # voice and text chat
+│   │   ├── ResultPage.tsx
+│   │   ├── MedicationPage.tsx  # plans, print slip, pharmacy finder
+│   │   ├── ContactPage.tsx
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── LanguageToggle.tsx
+│   │   ├── ThemeToggle.tsx     # light / dark switch
+│   │   └── SymptomName.tsx
 │   ├── data/
+│   │   ├── medicalData.ts
+│   │   └── symptomTranslations.ts   # Urdu names and aliases for 230 symptoms
+│   ├── lib/
+│   │   ├── symptomMatcher.ts   # Urdu / Roman Urdu / English symptom extraction
+│   │   ├── chatEngine.ts       # dialogue logic
+│   │   ├── usePersistentState.ts
+│   │   └── useTheme.ts
 │   ├── App.tsx
+│   ├── index.css
 │   └── main.tsx
 │
-├── public/
-├── ml_pipeline/
-├── requirements.txt
+├── Dr_HMF — ML_Pipeline.ipynb  # training and evaluation notebook
+├── server.ts                   # Express server for the production build
+├── index.html
 ├── package.json
 ├── vite.config.ts
-├── README.md
-└── .gitignore
+└── README.md
 ```
 
 ---
 
 # Frontend Description
 
-The frontend is built using React and TypeScript with Vite for high-performance development and optimized builds.
+Built with React and TypeScript on Vite.
 
-## Frontend Responsibilities
+## Main Pages
 
-- User interface rendering
-- Symptom input management
-- API request handling
-- Displaying prediction results
-- Managing responsive layouts
-- Improving user experience
-
-## Main Frontend Components
-
-- Home Page
-- Prediction Interface
-- Header
-- Footer
-- Disease Result Components
-- Medical Recommendation Sections
+- **Overview** – landing page
+- **Analysis** – pick symptoms from 230 options, shown in English, Urdu or both, with search in either script
+- **AI Chat** – the conversational assistant
+- **Prediction** – the predicted disease for the chosen symptoms
+- **Treatment** – medication, diet, workouts, precautions, printable slip, pharmacy search
+- **Contact** – contact form
 
 ---
 
 # Backend Description
 
-The backend is developed using Flask and acts as the communication bridge between the frontend and machine learning system.
+The Flask backend loads the trained model once and answers prediction requests.
 
-## Backend Responsibilities
+## `POST /predict`
 
-- API request handling
-- Symptom processing
-- ML model loading
-- Disease prediction generation
-- Returning JSON responses
+Request body: the selected symptoms. Response:
+
+```json
+{
+  "predicted_disease": "...",
+  "confidence": 0.0,
+  "medical_advice": { }
+}
+```
 
 ---
 
 # Machine Learning Pipeline
 
-The project includes a complete machine learning workflow designed for disease prediction.
+The workflow is documented in `Dr_HMF — ML_Pipeline.ipynb`.
+
+## Dataset
+
+- 96,088 records
+- 100 diseases (about 800 to 1,200 records each)
+- 230 binary symptom features (1 to 12 symptoms per record, 5.9 on average)
 
 ## Pipeline Stages
 
-### 1. Data Collection
+1. **Data collection** – symptom and disease records plus a knowledge base of descriptions, diet, precautions, workouts and medication
+2. **Data cleaning** – consistent names and removal of inconsistencies
+3. **Feature engineering** – each record becomes a 230-length binary vector
+4. **Label encoding** – disease names become numeric classes
+5. **Stratified split** – 70% train, 15% validation, 15% test (seed 42)
+6. **Model training** – Keras neural network
+7. **Evaluation** – accuracy, precision, recall and F1 on the held-out test set
+8. **Model saving** – model and encoders stored for inference
 
-Medical symptom and disease datasets are collected for model training.
+## Model Architecture
 
-### 2. Data Cleaning
+Dense 512 → 256 → 128 → 64 → softmax (100), with batch normalisation and dropout, Adam optimiser (learning rate 0.0005), categorical cross-entropy, 10 epochs, batch size 32. About 301,000 parameters.
 
-The datasets are cleaned to remove inconsistencies and improve quality.
+## Results (test set, 14,414 records)
 
-### 3. Feature Engineering
+| Metric | Score |
+|---|---|
+| Accuracy | 88.78% |
+| Precision (weighted) | 89.71% |
+| Recall (weighted) | 88.78% |
+| F1 (weighted) | 88.85% |
 
-Symptoms are transformed into machine-readable numerical vectors.
-
-### 4. Label Encoding
-
-Disease names are encoded into numerical labels for classification.
-
-### 5. Model Training
-
-The model is trained using machine learning algorithms and healthcare datasets.
-
-### 6. Model Evaluation
-
-The trained model is evaluated using accuracy and prediction metrics.
-
-### 7. Model Saving
-
-The trained model and encoders are stored for future inference.
-
----
-
-# Datasets
-
-The project uses healthcare datasets related to:
-- Symptoms
-- Diseases
-- Medical descriptions
-
-The datasets are used for:
-- Disease classification
-- Symptom mapping
-- Recommendation generation
-- Model training
-
----
-
-# AI Model Information
-
-The trained AI model is responsible for analyzing symptoms and predicting diseases.
-
-## Model Components
-
-```text
-backend/model/
-```
-
-Contains:
-- Trained model files
-- Feature encoder
-- Label encoder
-- Prediction utilities
+60 of the 100 diseases reach an F1 score of 0.90 or higher. The weakest classes are skin polyp, skin pigmentation disorder, personality disorder, COPD, acute bronchospasm and pneumonia.
 
 ---
 
@@ -278,43 +302,26 @@ Contains:
 
 ```bash
 git clone https://github.com/thehmfpk/Dr.HMF-AI-Medical-Agent.git
-```
-
----
-
-# Navigate to Project
-
-```bash
 cd Dr.HMF-AI-Medical-Agent
 ```
 
----
-
-# Frontend Setup
-
-## Install Dependencies
+## Frontend Setup
 
 ```bash
 npm install
-```
-
-## Start Frontend Server
-
-```bash
 npm run dev
 ```
 
-Frontend runs on:
+The app runs on `http://localhost:3000`.
 
-```text
-http://localhost:3000
+### Production Build
+
+```bash
+npm run build
+npm start
 ```
 
----
-
-# Backend Setup
-
-## Create Virtual Environment
+## Backend Setup
 
 ### Windows
 
@@ -323,42 +330,33 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-### Linux / MacOS
+### Linux / macOS
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
----
-
-# Install Backend Dependencies
+### Install and Run
 
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
+cd backend
+python app.py
 ```
 
----
+The API runs on `http://localhost:5000`.
 
-# Run Backend Server
+## Browser Notes
 
-```bash
-python backend/app.py
-```
-
-Backend runs on:
-
-```text
-http://localhost:5000
-```
+- **Voice input** uses the browser's speech recognition (best in Chrome or Edge on desktop and Android). Typing always works.
+- **Urdu voice** needs a browser that supports the `ur-PK` language.
 
 ---
 
 # Environment Variables
 
-Create a `.env` file for secure configuration management.
-
-Example:
+The contact form uses EmailJS. Keep keys out of the repository and store them in a `.env` file when you configure them:
 
 ```env
 API_KEY=YOUR_API_KEY
@@ -367,116 +365,59 @@ SECRET_KEY=YOUR_SECRET_KEY
 
 ---
 
-# GitHub Setup
+# Deployment Workflow
 
-## Initialize Git
+The repository is connected to Vercel. Pushing a feature branch creates a private preview deployment, and merging into `main` updates the live site.
 
-```bash
-git init
-```
-
-## Add Files
-
-```bash
-git add .
-```
-
-## Create Commit
-
-```bash
-git commit -m "Initial commit"
-```
-
-## Connect Repository
-
-```bash
-git remote add origin https://github.com/thehmfpk/Dr.HMF-AI-Medical-Agent.git
-```
-
-## Push Project
-
-```bash
-git push -u origin main
+```text
+feature branch → push to GitHub → Vercel preview → pull request → merge to main → www.drhmf.site
 ```
 
 ---
 
 # Future Improvements
 
-The project architecture allows future expansion into advanced healthcare AI systems.
-
 ## Planned Enhancements
 
-- AI chatbot integration
-- Voice-based healthcare assistant
+- Call the trained Flask model from the website (`/predict`) and show the real confidence
+- Native-speaker review of the Urdu symptom translations
+- Optional LLM-powered conversation on top of the current rule-based assistant
 - Medical report analysis
-- Real-time doctor recommendations
-- User authentication system
+- User authentication and medical history
 - Cloud database integration
-- Multi-language support
-- Medical history management
-- Deep learning optimization
-- Cloud deployment
+- Pharmacy finder with real maps and stock lookup
+- More languages (for example Punjabi and Sindhi)
+- Deep learning optimisation and calibration
 - Mobile application version
-- AI prescription generation
 
 ---
 
 # Security Considerations
 
-The project follows basic security practices:
-- Environment variable protection
-- API-based architecture
-- Modular backend separation
+- Environment variables for secrets
+- Chat and symptom data stay in the browser (session and local storage); nothing is sent to a server by the assistant
+- API-based architecture with backend separation
 - Input processing and validation
 
 ---
 
 # Scalability
 
-The architecture is designed for scalability and future enterprise-level expansion.
-
-Potential scalability areas include:
-- Cloud deployment
-- Distributed APIs
-- Advanced AI models
-- Database integration
-- Real-time analytics
-- Multi-user systems
+Potential areas: cloud deployment, distributed APIs, advanced AI models, database integration, real-time analytics and multi-user systems.
 
 ---
 
 # Educational Value
 
-This project demonstrates practical implementation of:
-- Artificial Intelligence
-- Machine Learning
-- Full Stack Development
-- Healthcare Technology
-- API Integration
-- Frontend Engineering
-- Backend Engineering
-- AI Deployment Concepts
-
-It can serve as:
-- Final year project
-- Portfolio project
-- AI healthcare research prototype
-- Educational AI system
+This project demonstrates practical implementation of artificial intelligence, machine learning, full-stack development, natural-language handling in two languages, accessible UI design and API integration. It can serve as a final year project, a portfolio project, an AI healthcare research prototype or an educational system.
 
 ---
 
 # Disclaimer
 
-This project is developed for:
-- Educational purposes
-- Research purposes
-- Artificial intelligence experimentation
-- Healthcare technology learning
+This project is developed for educational and research purposes, artificial intelligence experimentation and healthcare technology learning.
 
-The system does not replace professional medical diagnosis or treatment.
-
-Users should always consult licensed healthcare professionals for medical advice.
+The system does not replace professional medical diagnosis or treatment. In an emergency, call your local emergency number (Rescue 1122 / Edhi 115 in Pakistan) or go to the nearest hospital. Users should always consult licensed healthcare professionals for medical advice.
 
 ---
 
@@ -497,34 +438,21 @@ www.hafizmfaizan.site
 - Python Development
 - Healthcare AI Systems
 - API Development
-- Frontend Engineering
-- Backend Engineering
 
 ---
 
 # GitHub Repository
 
-Repository Name:
-
 ```text
 Dr.HMF-AI-Medical-Agent
 ```
 
-GitHub Topics:
+Suggested GitHub topics:
 
 ```text
-ai
-machine-learning
-healthcare
-medical-ai
-react
-flask
-python
-fullstack
-artificial-intelligence
-disease-prediction
-tensorflow
-vite
+ai machine-learning healthcare medical-ai react flask python fullstack
+artificial-intelligence disease-prediction tensorflow vite chatbot
+urdu voice-assistant dark-mode
 ```
 
 ---
@@ -537,27 +465,13 @@ This project is licensed under the MIT License.
 
 # Acknowledgements
 
-Special thanks to:
 - Open-source contributors
-- React ecosystem
-- Python ecosystem
-- TensorFlow community
-- Machine learning libraries
+- React and Python ecosystems
+- TensorFlow and Scikit-learn communities
 - Healthcare dataset providers
 
 ---
 
 # Conclusion
 
-Dr.HMF AI is a comprehensive healthcare AI platform that combines modern software engineering practices with artificial intelligence and machine learning technologies to create an intelligent medical assistance system.
-
-The project represents the integration of:
-- Healthcare technology
-- AI engineering
-- Machine learning systems
-- Full-stack web development
-- Scalable software architecture
-
-This system demonstrates how AI can be utilized to create intelligent healthcare solutions capable of assisting users through symptom-based disease prediction and medical recommendation systems.
-
-The project also serves as a strong demonstration of practical AI application development in real-world healthcare environments.
+Dr.HMF AI is a healthcare AI platform that combines machine learning, a bilingual voice and text assistant and a responsive light and dark interface to guide users from symptoms to a preliminary prediction, a treatment plan, a printable slip and a pharmacy search. It shows how AI can make health information more accessible, with safety checks and clear limits built in.
