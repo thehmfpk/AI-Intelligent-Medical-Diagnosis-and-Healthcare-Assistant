@@ -1,5 +1,4 @@
 # Dr.HMF AI – Intelligent Medical Diagnosis and Healthcare Assistant
-
 ## Overview
 
 Dr.HMF AI is an advanced full-stack artificial intelligence healthcare system developed to assist users in symptom-based disease prediction and intelligent healthcare guidance. The project integrates machine learning, modern frontend technologies, backend API architecture, and medical recommendation systems into a unified AI-powered healthcare platform.
