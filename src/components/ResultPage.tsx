@@ -6,7 +6,9 @@ import {
 import { medicalEncyclopedia, symptomCategories } from '../data/medicalData';
 import { RankedDisease, matchStrength } from '../lib/predictor';
 import { describeAll } from '../lib/medicineGuide';
-import { hasRedFlag, symptomMatchesQuery } from '../lib/symptomMatcher';
+import { hasRedFlag, symptomMatchesQuery, extractSymptoms } from '../lib/symptomMatcher';
+import { useSpeechInput } from '../lib/useSpeechInput';
+import MicButton from './MicButton';
 import MedicineImage from './MedicineImage';
 import FollowUpTimeline from './FollowUpTimeline';
 
@@ -36,6 +38,8 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
   const [q, setQ] = useState('');
   // Reset the editor when a new prediction arrives
   React.useEffect(() => { setEdit(symptoms); setPick(0); }, [symptoms, ranking]);
+
+  const mic = useSpeechInput(text => setEdit(e => [...e, ...extractSymptoms(text).found.filter(f => !e.includes(f))]));
 
   const current = ranking[pick];
   const info = current ? findInfo(current.disease) : undefined;
@@ -122,13 +126,16 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
             </div>
             <div className="relative mb-4">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-              <input value={q} onChange={e => setQ(e.target.value)} placeholder="Add a symptom (English, اردو, Roman Urdu)" className="w-full bg-zinc-950/50 border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50" />
+              <div className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10"><MicButton supported={mic.supported} listening={mic.listening} onStart={mic.start} onStop={mic.stop} /></div>
+              <input value={q} onChange={e => setQ(e.target.value)} placeholder="Add a symptom (type or speak)" className="w-full bg-zinc-950/50 border border-white/10 rounded-xl py-2.5 pl-9 pr-32 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50" />
               {suggestions.length > 0 && (
                 <ul className="absolute z-20 left-0 right-0 mt-1 rounded-xl border border-white/10 bg-zinc-950 shadow-xl overflow-hidden">
                   {suggestions.map(s => (<li key={s}><button onClick={() => { setEdit(e => [...e, s]); setQ(''); }} className="w-full text-left px-3 py-2 text-sm hover:bg-white/5 flex items-center gap-2 cursor-pointer"><Plus size={12} className="text-cyan-400" />{s}</button></li>))}
                 </ul>
               )}
             </div>
+            {mic.listening && <p className="text-cyan-300 text-xs mb-2" role="status">Listening… {mic.interim}</p>}
+            {!mic.listening && mic.error && <p className="text-amber-300 text-xs mb-2" role="alert">{mic.error}</p>}
             <button disabled={edit.length === 0} onClick={() => onRerun(edit)}
               className={`w-full py-3.5 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${changed ? 'bg-cyan-500 text-black hover:bg-white' : 'border border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10'}`}>
               <RotateCcw size={14} />{changed ? 'Re-run prediction with changes' : 'Re-run prediction'}
