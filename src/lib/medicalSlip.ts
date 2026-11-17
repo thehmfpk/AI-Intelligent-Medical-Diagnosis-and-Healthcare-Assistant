@@ -75,7 +75,7 @@ tr,.slot,.warn{break-inside:avoid}
 <div class="chips">${symptoms.length ? symptoms.map(s => `<span>${esc(s)}</span>`).join('') : '<small>Not recorded</small>'}</div>
 
 <h2>Assessment (AI symptom matching)</h2>
-<p style="margin:0"><b style="text-transform:capitalize">${esc(info.Disease)}</b>${match != null ? ` · symptom match ${match}%` : ''}<br><small>${esc(info.Description)}</small></p>
+<p style="margin:0"><b style="text-transform:capitalize">${esc(info.Disease)}</b><br><small>${esc(info.Description)}</small></p>
 
 <div class="rx">&#8478;</div>
 <table><thead><tr><th>#</th><th>Medicine type</th><th>Used for</th><th>When</th><th>Food</th><th>Duration</th></tr></thead>
