@@ -168,3 +168,22 @@ html.light .text-emerald-300, html.light .text-emerald-400 { color: #047857; }
 html.light .text-amber-300, html.light .text-amber-200, html.light .text-amber-400 { color: #b45309; }
 html.light .text-red-300, html.light .text-red-200, html.light .text-red-400 { color: #b91c1c; }
 html.light .text-cyan-200, html.light .text-cyan-300 { color: #0e7490; }
+
+/* ---- Hero ---- */
+@keyframes hero-spin { to { transform: rotate(360deg); } }
+@keyframes hero-spin-rev { to { transform: rotate(-360deg); } }
+@keyframes hero-ecg { 0% { stroke-dashoffset: 400; } 100% { stroke-dashoffset: 0; } }
+@keyframes hero-bar { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+@keyframes hero-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes hero-orb { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -20px) scale(1.12); } }
+@keyframes hero-shine { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.hero-spin { animation: hero-spin 28s linear infinite; }
+.hero-spin-rev { animation: hero-spin-rev 40s linear infinite; }
+.hero-ecg { stroke-dasharray: 400; animation: hero-ecg 2.4s linear infinite; }
+.hero-bar { transform-origin: bottom; animation: hero-bar 1s ease-in-out infinite; }
+.hero-float { animation: hero-float 6s ease-in-out infinite; }
+.hero-orb { animation: hero-orb 14s ease-in-out infinite; }
+.hero-shine { background-size: 200% auto; animation: hero-shine 6s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-spin, .hero-spin-rev, .hero-ecg, .hero-bar, .hero-float, .hero-orb, .hero-shine { animation: none; }
+}
