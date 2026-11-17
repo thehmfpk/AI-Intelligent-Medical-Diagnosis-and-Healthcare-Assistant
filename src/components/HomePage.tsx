@@ -2,15 +2,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, ShieldCheck, Microscope, Cpu, 
-  HeartPulse, Scan, Globe, Brain, BriefcaseMedical, CalendarCheck
+  HeartPulse, Scan, Globe, Brain, BriefcaseMedical, Wind
 } from 'lucide-react';
 
 interface HomePageProps {
   onStart: () => void;
-  onBook: () => void;
+  onAqi: () => void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ onStart, onBook }) => {
+const HomePage: React.FC<HomePageProps> = ({ onStart, onAqi }) => {
   // Global animation configurations for high-tech snappy feel
   const staggerContainer = {
     initial: {},
@@ -75,8 +75,8 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onBook }) => {
                 <button onClick={onStart} className="group px-10 py-5 bg-cyan-500 text-black font-black uppercase text-xs tracking-[0.3em] rounded-full hover:bg-white transition-all flex items-center gap-4 shadow-[0_0_40px_rgba(6,182,212,0.3)] cursor-pointer">
                   Let's Begin Checkup <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
                 </button>
-                <button onClick={onBook} className="px-10 py-5 border border-white/10 text-white font-black uppercase text-xs tracking-[0.3em] rounded-full hover:bg-white/5 transition-all cursor-pointer flex items-center gap-3">
-                  <CalendarCheck size={16} /> Book an Appointment
+                <button onClick={onAqi} className="px-10 py-5 border border-white/10 text-white font-black uppercase text-xs tracking-[0.3em] rounded-full hover:bg-white/5 transition-all cursor-pointer flex items-center gap-3">
+                  <Wind size={16} /> Live AQI Map
                 </button>
               </motion.div>
             </motion.div>

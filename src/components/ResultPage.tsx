@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  ArrowRight, AlertTriangle, RefreshCw, X, Plus, CalendarCheck, Stethoscope, Pill, CalendarClock, ShieldCheck, RotateCcw, Search,
+  ArrowRight, AlertTriangle, RefreshCw, X, Plus, Stethoscope, Pill, CalendarClock, ShieldCheck, RotateCcw, Search,
 } from 'lucide-react';
 import { medicalEncyclopedia, symptomCategories } from '../data/medicalData';
 import { RankedDisease } from '../lib/predictor';
@@ -18,7 +18,6 @@ interface Props {
   ranking: RankedDisease[];
   onRerun: (symptoms: string[]) => void;
   onCheckMedication: (d: string) => void;
-  onBook: () => void;
   onNewCheckup: () => void;
   history: { disease: string; date: string; symptoms: number }[];
 }
@@ -28,7 +27,7 @@ const titleCase = (s: string) => s.replace(/\b\w/g, c => c.toUpperCase());
 const findInfo = (d: string) => medicalEncyclopedia[Object.keys(medicalEncyclopedia).find(k => k.toLowerCase() === d.toLowerCase()) ?? ''];
 
 
-const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedication, onBook, onNewCheckup, history }) => {
+const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedication, onNewCheckup, history }) => {
   const [pick, setPick] = useState(0);
   const [edit, setEdit] = useState<string[]>(symptoms);
   const [q, setQ] = useState('');
@@ -165,7 +164,6 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
           <button onClick={() => onCheckMedication(current.disease)} className="flex-1 px-6 py-5 bg-cyan-500 hover:bg-white text-black font-black uppercase tracking-widest text-xs rounded-xl flex items-center justify-center gap-3 cursor-pointer group">
             Treatment, pharmacy and medical slip <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </button>
-          <button onClick={onBook} className="flex-1 px-6 py-5 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10 font-black uppercase tracking-widest text-xs rounded-xl flex items-center justify-center gap-3 cursor-pointer"><CalendarCheck size={14} />Book an appointment</button>
         </div>
 
         <p className="text-[11px] text-zinc-600 text-center leading-relaxed max-w-3xl mx-auto">
