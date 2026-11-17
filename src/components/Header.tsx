@@ -113,7 +113,7 @@ import { Stethoscope, Menu, X, Activity, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
-export type Page = 'home' | 'analysis' | 'chat' | 'appointment' | 'result' | 'medication' | 'contact';
+export type Page = 'home' | 'analysis' | 'chat' | 'aqi' | 'result' | 'medication' | 'contact';
 
 interface HeaderProps {
   currentPage: Page;
@@ -137,7 +137,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
     { name: 'AI Chat', id: 'chat' as Page },
     { name: 'Prediction', id: 'result' as Page },
     { name: 'Treatment', id: 'medication' as Page },
-    { name: 'Book', id: 'appointment' as Page },
+    { name: 'AQI Map', id: 'aqi' as Page },
     { name: 'Contact', id: 'contact' as Page },
   ];
 

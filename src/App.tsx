@@ -8,7 +8,7 @@ import ResultPage from './components/ResultPage';
 import MedicationPage from './components/MedicationPage';
 import ContactPage from './components/ContactPage';
 import ChatAssistant from './components/ChatAssistant';
-import AppointmentPage from './components/AppointmentPage';
+import AqiMapPage from './components/AqiMapPage';
 import PredictionAnimation from './components/PredictionAnimation';
 import { rankDiseases, RankedDisease } from './lib/predictor';
 import { medicalEncyclopedia, DiseaseInfo } from './data/medicalData';
@@ -96,7 +96,7 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <HomePage onStart={handleStartAnalysis} onBook={() => setCurrentPage('appointment')} />
+              <HomePage onStart={handleStartAnalysis} onAqi={() => setCurrentPage('aqi')} />
             </motion.div>
           )}
 
@@ -140,7 +140,6 @@ export default function App() {
                 ranking={ranking}
                 onRerun={handleAnalyze}
                 onCheckMedication={handleCheckMedication}
-                onBook={() => setCurrentPage('appointment')}
                 onNewCheckup={() => setCurrentPage('analysis')}
                 history={history}
               />
@@ -158,16 +157,15 @@ export default function App() {
               <MedicationPage
                 info={selectedDiseaseInfo}
                 symptoms={symptoms}
-                onBook={() => setCurrentPage('appointment')}
                 onBack={() => setCurrentPage('result')}
                 history={history}
               />
             </motion.div>
           )}
 
-          {currentPage === 'appointment' && (
-            <motion.div key="appointment" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
-              <AppointmentPage knownSymptoms={symptoms} onStartCheckup={() => setCurrentPage('analysis')} />
+          {currentPage === 'aqi' && (
+            <motion.div key="aqi" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
+              <AqiMapPage />
             </motion.div>
           )}
 
