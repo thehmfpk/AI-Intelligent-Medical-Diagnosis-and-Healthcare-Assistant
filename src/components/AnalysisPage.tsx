@@ -299,7 +299,7 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, onOpenChat }) =>
                       </button>
                     </div>
                     <p className="text-[13px] leading-snug text-zinc-200">{doctorLine.en}</p>
-                    {displayMode !== 'en' && <p className="font-urdu text-sm leading-relaxed text-cyan-200/90 mt-1" dir="rtl">{doctorLine.ur}</p>}
+                    {<p className="font-urdu text-sm leading-relaxed text-cyan-200/90 mt-1" dir="rtl">{doctorLine.ur}</p>}
                   </div>
                 </div>
               </div>

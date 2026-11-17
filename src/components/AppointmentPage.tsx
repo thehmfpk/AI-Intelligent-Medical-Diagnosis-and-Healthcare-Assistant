@@ -11,6 +11,7 @@ import {
 } from '../lib/appointments';
 import { browserPrefersUrdu } from '../lib/autoLanguage';
 import { useSpeechInput } from '../lib/useSpeechInput';
+import SymptomName from './SymptomName';
 import MicButton from './MicButton';
 import type { Lang } from '../lib/symptomMatcher';
 
@@ -276,7 +277,7 @@ const AppointmentPage: React.FC<Props> = ({ knownSymptoms = [], onStartCheckup }
                 <p className="font-urdu text-[13px] text-zinc-500 mt-1" dir="rtl">{tri.reasons.ur}</p>
               </div>
               {tri.symptoms.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mb-4">{tri.symptoms.slice(0, 8).map(s => (<span key={s} className="px-2 py-1 rounded-md bg-white/5 text-[11px] text-zinc-300">{s}</span>))}</div>
+                <div className="flex flex-wrap gap-1.5 mb-4">{tri.symptoms.slice(0, 8).map(s => (<span key={s} className="px-2 py-1 rounded-md bg-white/5 text-[11px] text-zinc-300"><SymptomName symptom={s} mode="both" /></span>))}</div>
               )}
               <div className={`rounded-xl p-3 text-xs font-bold ${tri.urgency === 'emergency' ? 'bg-red-500/10 border border-red-500/40 text-red-300' : tri.urgency === 'priority' ? 'bg-amber-500/10 border border-amber-500/30 text-amber-300' : 'bg-white/5 text-zinc-300'}`}>
                 Priority: {URGENCY_LABEL[tri.urgency].en}

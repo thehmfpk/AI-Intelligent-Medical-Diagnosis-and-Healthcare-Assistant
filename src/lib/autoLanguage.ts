@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 import { DisplayMode } from '../data/symptomTranslations';
-import { hasUrduScript, symptomMatchesQuery } from './symptomMatcher';
-import { englishLabel } from '../data/symptomTranslations';
 
 /** True when the browser or device is set to Urdu. */
 export function browserPrefersUrdu(): boolean {
@@ -11,19 +9,11 @@ export function browserPrefersUrdu(): boolean {
 }
 
 /**
- * Chooses how symptoms are displayed, without any switch for the user:
- * - Urdu script typed in the search box shows Urdu names;
- * - a Roman Urdu search (matches a symptom but not its English name) shows both;
- * - otherwise it follows the browser language: both for Urdu devices, English for the rest.
+ * Symptoms are always shown in English with the Urdu name underneath, so no
+ * switch is needed and nobody has to choose a language.
  */
-export function autoDisplayMode(search: string, sample: string[] = []): DisplayMode {
-  const q = search.trim();
-  if (q) {
-    if (hasUrduScript(q)) return 'ur';
-    const hits = sample.filter(s => symptomMatchesQuery(s, q));
-    if (hits.length && hits.every(s => !englishLabel(s).toLowerCase().includes(q.toLowerCase()))) return 'both';
-  }
-  return browserPrefersUrdu() ? 'both' : 'en';
+export function autoDisplayMode(_search: string = '', _sample: string[] = []): DisplayMode {
+  return 'both';
 }
 
 export function useAutoDisplayMode(search: string, sample: string[]): DisplayMode {
