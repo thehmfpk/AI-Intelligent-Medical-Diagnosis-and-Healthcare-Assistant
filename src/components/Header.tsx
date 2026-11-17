@@ -113,7 +113,7 @@ import { Stethoscope, Menu, X, Activity, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
-export type Page = 'home' | 'analysis' | 'chat' | 'result' | 'medication' | 'contact';
+export type Page = 'home' | 'analysis' | 'chat' | 'appointment' | 'result' | 'medication' | 'contact';
 
 interface HeaderProps {
   currentPage: Page;
@@ -137,6 +137,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
     { name: 'AI Chat', id: 'chat' as Page },
     { name: 'Prediction', id: 'result' as Page },
     { name: 'Treatment', id: 'medication' as Page },
+    { name: 'Book', id: 'appointment' as Page },
     { name: 'Contact', id: 'contact' as Page },
   ];
 
@@ -183,7 +184,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             <button
               key={item.id}
               onClick={() => setCurrentPage(item.id)}
-              className={`relative px-4 lg:px-6 py-2 text-[11px] font-mono uppercase tracking-[0.15em] transition-all duration-300 rounded-full ${currentPage === item.id ? 'text-black' : 'text-gray-400 hover:text-white'
+              className={`relative px-3 lg:px-4 xl:px-5 py-2 text-[11px] font-mono uppercase tracking-[0.15em] transition-all duration-300 rounded-full ${currentPage === item.id ? 'text-black' : 'text-gray-400 hover:text-white'
                 }`}
             >
               <span className="relative z-10">{item.name}</span>
@@ -210,7 +211,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-cyan-400" />
 
             <span className="relative flex items-center gap-2 text-xs font-black uppercase tracking-widest text-cyan-400 group-hover:text-white transition-colors">
-              Core Terminal <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              Let's Begin <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </span>
           </button>
         </div>
@@ -258,7 +259,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
                 onClick={() => { setCurrentPage('analysis'); setIsOpen(false); }}
                 className="mt-4 w-full py-5 bg-cyan-500 text-black font-black uppercase tracking-[0.2em] text-xs rounded-xl shadow-[0_10px_20px_rgba(34,211,238,0.3)]"
               >
-                Launch Diagnostic
+                Let's Begin Checkup
               </button>
             </div>
           </motion.div>

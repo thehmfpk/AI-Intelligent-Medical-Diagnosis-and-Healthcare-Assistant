@@ -144,3 +144,27 @@ html.theme-anim, html.theme-anim body, html.theme-anim body * {
 
 /* Heavy black glows from the dark design become soft shadows in light mode */
 html.light [class*="rgba(0,0,0"] { box-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.16) !important; }
+
+/* ---- Doctor avatar + prediction animation ---- */
+@keyframes doc-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.08); } }
+@keyframes doc-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes doc-talk { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+@keyframes doc-type { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+@keyframes doc-nod { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(1.6deg); } }
+@keyframes rise-in { from { transform: translateY(60px) scale(0.92); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+@keyframes scan-line { 0% { top: 6%; } 100% { top: 88%; } }
+.doc-blink { transform-box: fill-box; transform-origin: center; animation: doc-blink 4.5s infinite; }
+.doc-breathe { animation: doc-breathe 3.2s ease-in-out infinite; }
+.doc-talk { transform-box: fill-box; transform-origin: center; animation: doc-talk 0.28s ease-in-out infinite; }
+.doc-type-l { animation: doc-type 0.22s ease-in-out infinite; }
+.doc-type-r { animation: doc-type 0.22s ease-in-out infinite 0.11s; }
+.doc-nod { transform-box: fill-box; transform-origin: 50% 90%; animation: doc-nod 4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .doc-blink, .doc-breathe, .doc-talk, .doc-type-l, .doc-type-r, .doc-nod { animation: none; }
+}
+
+/* Light-mode contrast for the soft status colours used by the new pages */
+html.light .text-emerald-300, html.light .text-emerald-400 { color: #047857; }
+html.light .text-amber-300, html.light .text-amber-200, html.light .text-amber-400 { color: #b45309; }
+html.light .text-red-300, html.light .text-red-200, html.light .text-red-400 { color: #b91c1c; }
+html.light .text-cyan-200, html.light .text-cyan-300 { color: #0e7490; }

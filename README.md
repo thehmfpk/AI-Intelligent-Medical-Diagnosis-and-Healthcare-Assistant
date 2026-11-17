@@ -46,6 +46,14 @@ The project combines machine learning (a trained neural network on 96,088 record
 | **Bilingual symptoms** | All 230 symptoms shown in English, Urdu, or both, searchable in any script |
 | **Safety layer** | Emergency and self-harm detection with Rescue 1122 / Edhi 115 |
 | **Light and dark mode** | Sun/moon toggle, remembered between visits, no flash on load |
+| **Appointment booking** | Patient details, department suggested from the symptoms, 30-minute slots, AI-written bilingual confirmation, calendar file |
+| **Let's Begin Checkup** | New entry button; the language is detected automatically (no language switch) |
+| **AI doctor guide** | An animated doctor on the Analysis page looks at the user, guides the next symptom, and has an optional voice |
+| **Prediction animation** | "Done" plays a doctor-typing animation and opens the result |
+| **Ranked prediction** | Top conditions with a symptom-match score, editable symptoms, and a re-run that does not reload the site |
+| **Medicine map and follow-up** | What each suggested medicine is for, with a morning / afternoon / evening / night plan |
+| **Treatment redesign** | Medicine cards with illustrations, nearby pharmacy map, and a one-page A4 medical slip |
+| **Advanced chat UI** | Doctor avatar, live "likely conditions" panel, quick-start prompts, automatic language |
 | **Project report** | A formal report covering the problem, dataset, model, design and testing |
 
 ---
@@ -205,10 +213,25 @@ After a prediction, the **Treatment** page shows:
 - A workout plan
 - Precautions and safety guidance
 
-Two actions finish the journey:
+The page now contains:
 
-- **Print Protocol** opens a printable slip containing the findings and plan
-- **Global Pharmacy** opens a web search for pharmacies near the user for the suggested medicines
+- **Medicine cards** with an illustration of the medicine type, what it is for, when and how it is usually taken, how long, a tip and a warning (`src/lib/medicineGuide.ts`)
+- **Daily follow-up** grouped into morning (8:00 AM), afternoon (2:00 PM), evening (6:00 PM) and night (9:30 PM), plus "as needed" items
+- **Available near you**: type a city or use the device location to open an embedded map of pharmacies, hospitals, clinics or laboratories, with a "find near you" link per medicine
+- **Medical slip**: an A4 slip (patient fields, symptoms, assessment, medicine table, schedule, precautions, diet, emergency notice, signature boxes), printed through a hidden frame (`src/lib/medicalSlip.ts`)
+
+Honest limits: the pictures are illustrations of a medicine *type*, not branded products; no doses (mg) are printed, because a doctor must set them; the map shows where to look but cannot know a shop's stock, so the page tells the user to call first; and the slip is information, not a prescription, until a licensed doctor signs it.
+
+# Appointment Booking
+
+The **Book an Appointment** button (home page and navigation) opens a booking page:
+
+1. The patient enters name, age, gender, phone, optional email, city, visit type and the reason for the visit (English, Urdu or Roman Urdu).
+2. The scheduling assistant reads the reason, suggests a **department** and a **priority** (routine, priority, urgent) using the same symptom matcher and red-flag list as the chat, and recommends the best free slots.
+3. The patient picks a date and a 30-minute slot (closed Sundays; booked and past slots are disabled).
+4. A bilingual **confirmation** is generated (reference number, department, time, how to prepare, safety advice), which can be copied, shared by WhatsApp, saved to a calendar (`.ics`) or printed.
+
+Important: this is a front-end demo. Bookings are stored in the browser's local storage, so they are not shared between devices and no clinic system is notified; no email is sent to the patient (the current EmailJS template only reaches the site owner). To make it real, connect `saveBooking` in `src/lib/appointments.ts` to a backend and an email/SMS service.
 
 ---
 

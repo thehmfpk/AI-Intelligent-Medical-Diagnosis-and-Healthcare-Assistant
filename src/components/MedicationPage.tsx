@@ -1,660 +1,165 @@
-// import React from 'react';
-// import { motion } from 'framer-motion';
-// import {
-//   Printer,
-//   MapPin,
-//   ArrowLeft,
-//   Pill,
-//   Utensils,
-//   Dumbbell,
-//   ShieldAlert,
-//   CheckCircle2,
-//   Clock,
-//   ExternalLink,
-//   Activity,
-//   Cpu,
-//   Layers,
-//   Sparkles
-// } from 'lucide-react';
-// import { DiseaseInfo } from '../data/medicalData';
-
-// interface MedicationPageProps {
-//   info: DiseaseInfo;
-//   onBack: () => void;
-//   history: { disease: string, date: string, symptoms: number }[];
-// }
-
-// const MedicationPage: React.FC<MedicationPageProps> = ({ info, onBack, history }) => {
-//   const handlePrint = () => {
-//   const formatText = (text: string, wordsPerLine = 8) => {
-//     const words = text.split(" ");
-//     let result = "";
-    
-//     for (let i = 0; i < words.length; i++) {
-//       if (i % wordsPerLine === 0) result += "\n";
-//       result += words[i] + " ";
-//     }
-
-//     return result;
-//   };
-
-//   const printContent = `
-// ===============================
-//         MEDICAL SLIP
-// ===============================
-
-// Agent: Dr.HMF AI SYSTEM
-
-// -------------------------------
-// DISEASE
-// -------------------------------
-// ${info.Disease}
-
-// -------------------------------
-// DESCRIPTION
-// -------------------------------
-// ${formatText(info.Description)}
-
-// -------------------------------
-// MEDICATIONS
-// -------------------------------
-// ${info.Medication.map(m => `- ${m}`).join("\n")}
-
-// -------------------------------
-// DIET PLAN
-// -------------------------------
-// ${info.Diet.map(d => `- ${d}`).join("\n")}
-
-// -------------------------------
-// WORKOUT PLAN
-// -------------------------------
-// ${info.Workouts.map(w => `- ${w}`).join("\n")}
-
-// -------------------------------
-// PRECAUTIONS
-// -------------------------------
-// - ${info.Precaution_1}
-// - ${info.Precaution_2}
-// - ${info.Precaution_3}
-// - ${info.Precaution_4}
-
-// ===============================
-// DATE: ${new Date().toLocaleString()}
-
-//         AI GENERATED REPORT
-// ===============================
-// `;
-
-//   const newWindow = window.open("", "_blank");
-
-//   if (newWindow) {
-//     newWindow.document.write(`<pre style="font-family: monospace; font-size: 12px;">${printContent}</pre>`);
-//     newWindow.document.close();
-//     newWindow.print();
-//   }
-// };
-
-//   const findPharmacy = () => {
-//     window.open(`https://www.google.com/search?q=pharmacy+near+me+${info.Disease}+medication`, '_blank');
-//   };
-
-//   return (
-//     <div className="pt-24 pb-28 min-h-screen bg-[#030407] text-[#e2e8f0] font-sans relative overflow-hidden selection:bg-cyan-500/30">
-//       {/* Background Tech Aesthetic Coordinates */}
-//       <div className="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e905_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e905_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-//       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-900/10 blur-[160px] rounded-full pointer-events-none" />
-
-//       <div className="max-w-6xl mx-auto px-4 relative z-10">
-        
-//         {/* --- GLOBAL APP HEADER BAR --- */}
-//         <div className="flex items-center justify-between border-b border-cyan-900/30 pb-4 mb-6 no-print text-[11px] font-mono tracking-widest text-zinc-500">
-//           <div className="flex items-center gap-2">
-//             <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-//             <span>DR.HMF AI SYSTEM // MED_PAGE</span>
-//           </div>
-//           <div className="flex items-center gap-4">
-//             <span>MESH_SYNC: <span className="text-cyan-400">100%</span></span>
-//             <span>MODE: <span className="text-amber-500">PRIORITY_PROTOCOL</span></span>
-//           </div>
-//         </div>
-
-//         {/* --- ACTIONS & NAVIGATION CONTROL --- */}
-//         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-8 no-print">
-//           <button
-//             onClick={onBack}
-//             className="flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-950/40 text-zinc-400 hover:text-white hover:border-zinc-700 transition-all group font-mono text-xs tracking-wider"
-//           >
-//             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-//             <span>RETURN TO VECTOR</span>
-//           </button>
-          
-//           <div className="flex items-center gap-3 w-full sm:w-auto">
-//             <button
-//               onClick={handlePrint}
-//               className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-zinc-900/60 border border-zinc-800 hover:border-cyan-500/40 hover:text-cyan-400 text-xs font-mono rounded-lg transition-all"
-//             >
-//               <Printer size={14} /> Print Protocol
-//             </button>
-//             <button
-//               onClick={findPharmacy}
-//               className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-black font-mono font-bold text-xs rounded-lg transition-all shadow-[0_0_25px_rgba(6,182,212,0.15)]"
-//             >
-//               <MapPin size={14} /> Global Pharmacy
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* --- INTEGRATED CORE DIAGNOSTIC CONSOLE --- */}
-//         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          
-//           {/* LEFT TELEMETRY SIDEBAR PANEL */}
-//           <div className="lg:col-span-4 flex flex-col gap-6">
-            
-//             {/* META STATE MODULE */}
-//             <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl relative overflow-hidden">
-//               <div className="absolute top-0 right-0 w-16 h-16 bg-cyan-500/[0.02] border-b border-l border-cyan-500/10 rounded-bl-xl flex items-center justify-center text-cyan-500">
-//                 <Cpu size={14} />
-//               </div>
-              
-//               <h3 className="text-[10px] font-mono font-black text-cyan-500 tracking-[0.3em] uppercase mb-4 flex items-center gap-1.5">
-//                 <Activity size={10} /> Intelligence Summary
-//               </h3>
-
-//               <div className="space-y-2 text-xs font-mono">
-//                 <div className="flex justify-between p-2 rounded bg-zinc-900/30 border border-zinc-900">
-//                   <span className="text-zinc-500">System Trace</span>
-//                   <span className="text-zinc-300 font-bold">AUTH-Z-24</span>
-//                 </div>
-//                 <div className="flex justify-between p-2 rounded bg-zinc-900/30 border border-zinc-900">
-//                   <span className="text-zinc-500">Confidence Match</span>
-//                   <span className="text-green-400 font-bold">98.2%</span>
-//                 </div>
-//                 <div className="flex justify-between p-2 rounded bg-zinc-900/30 border border-zinc-900">
-//                   <span className="text-zinc-500">Session ID</span>
-//                   <span className="text-zinc-400">#440932</span>
-//                 </div>
-//               </div>
-
-//               <div className="mt-4 pt-4 border-t border-zinc-900">
-//                 <div className="flex justify-between text-[10px] font-mono text-zinc-500 mb-1.5">
-//                   <span>NEURAL INTEGRITY MATCH</span>
-//                   <span>100%</span>
-//                 </div>
-//                 <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden">
-//                   <motion.div
-//                     initial={{ x: "-100%" }}
-//                     animate={{ x: "100%" }}
-//                     transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-//                     className="w-1/2 h-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
-//                   />
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* PHARMACOLOGICAL VECTOR MODULE */}
-//             <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl flex-1 flex flex-col">
-//               <h3 className="text-[10px] font-mono font-black text-cyan-500 tracking-[0.3em] uppercase mb-4 flex items-center gap-1.5">
-//                 <Pill size={12} /> Advanced Medication
-//               </h3>
-              
-//               <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
-//                 {info.Medication.map((med, i) => (
-//                   <div key={i} className="p-3 bg-zinc-900/40 border border-zinc-900 rounded-lg flex items-start gap-3 group hover:border-zinc-800 transition-colors">
-//                     <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-cyan-950 border border-cyan-900/50 text-cyan-400 rounded">
-//                       #0{i + 1}
-//                     </span>
-//                     <p className="text-xs text-zinc-300 font-medium leading-tight pt-0.5">
-//                       {med}
-//                     </p>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-
-//           </div>
-
-//           {/* MAIN DIAGNOSTIC WORKSPACE BLOCK */}
-//           <div className="lg:col-span-8 flex flex-col gap-6">
-            
-//             {/* PRIMARY CONTEXT & DESCRIPTION HEADER */}
-//             <div className="p-6 md:p-8 bg-gradient-to-br from-zinc-950 to-[#07080c] border border-zinc-900 rounded-xl relative overflow-hidden">
-//               <div className="absolute -right-16 -top-16 w-48 h-48 bg-cyan-500/[0.01] rounded-full blur-3xl pointer-events-none" />
-              
-//               <div className="flex items-center gap-2 mb-2">
-//                 <Layers size={12} className="text-cyan-500" />
-//                 <span className="text-[9px] font-mono tracking-[0.4em] text-zinc-500 uppercase">Diagnostic Isolate Target</span>
-//               </div>
-              
-//               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight italic uppercase mb-4 text-white">
-//                 {info.Disease}
-//               </h2>
-              
-//               <p className="text-xs md:text-sm text-zinc-400 leading-relaxed max-w-3xl">
-//                 {info.Description}
-//               </p>
-//             </div>
-
-//             {/* MAPPED CLINICAL LIFESTYLE PROTOCOLS */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-//               {/* NUTRITION SCHEDULING CONTAINER */}
-//               <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl relative">
-//                 <div className="flex items-center justify-between mb-4 border-b border-zinc-900 pb-3">
-//                   <h4 className="text-xs font-bold tracking-tight text-zinc-200 flex items-center gap-2">
-//                     <Utensils size={14} className="text-green-500" /> Diet Plan Mapping
-//                   </h4>
-//                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-//                 </div>
-//                 <ul className="space-y-2.5">
-//                   {info.Diet.map((d, i) => (
-//                     <li key={i} className="flex items-start gap-2.5 text-xs text-zinc-400 group">
-//                       <CheckCircle2 size={12} className="text-green-600/70 shrink-0 mt-0.5 group-hover:text-green-400 transition-colors" />
-//                       <span className="leading-snug">{d}</span>
-//                     </li>
-//                   ))}
-//                 </ul>
-//               </div>
-
-//               {/* WORKOUT / REGIME PROTOCOLS CONTAINER */}
-//               <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl relative">
-//                 <div className="flex items-center justify-between mb-4 border-b border-zinc-900 pb-3">
-//                   <h4 className="text-xs font-bold tracking-tight text-zinc-200 flex items-center gap-2">
-//                     <Dumbbell size={14} className="text-blue-500" /> Workout Plan Regime
-//                   </h4>
-//                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-//                 </div>
-//                 <ul className="space-y-2.5">
-//                   {info.Workouts.map((w, i) => (
-//                     <li key={i} className="flex items-start gap-2.5 text-xs text-zinc-400 group">
-//                       <div className="w-1 h-1 rounded-full bg-blue-500 shrink-0 mt-2 group-hover:scale-150 transition-transform" />
-//                       <span className="leading-snug">{w}</span>
-//                     </li>
-//                   ))}
-//                 </ul>
-//               </div>
-
-//             </div>
-
-//             {/* CRITICAL SAFELINES / PRECAUTIONS MODULE */}
-//             <div className="p-5 bg-gradient-to-br from-amber-500/[0.02] to-zinc-950 border border-amber-500/10 rounded-xl relative overflow-hidden">
-//               <div className="absolute top-0 right-0 p-3 text-[9px] font-mono border-b border-l border-amber-500/10 text-amber-500 bg-amber-500/[0.02] uppercase tracking-wider rounded-bl-lg">
-//                 Status: Critical Oversight Required
-//               </div>
-              
-//               <h4 className="text-xs font-bold uppercase text-amber-500 tracking-wider flex items-center gap-2 mb-4">
-//                 <ShieldAlert size={14} /> Priority Safelines
-//               </h4>
-
-//               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-//                 {[info.Precaution_1, info.Precaution_2, info.Precaution_3, info.Precaution_4].map((p, i) => (
-//                   <div key={i} className="p-3 bg-zinc-950 border border-zinc-900 hover:border-amber-500/20 rounded-lg flex items-center gap-3 transition-colors">
-//                     <span className="font-mono text-xs font-black text-amber-500/20">#0{i + 1}</span>
-//                     <span className="text-xs text-zinc-400 leading-tight font-medium">{p}</span>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-
-//             {/* NEURAL PIPELINE AUTOMATION FOOTNOTE */}
-//             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-zinc-950 border border-zinc-900 rounded-xl no-print">
-//               <div className="flex items-center gap-3 text-left">
-//                 <Clock size={16} className="text-zinc-600 shrink-0" />
-//                 <div>
-//                   <p className="text-xs font-bold text-zinc-300">Neural Subscription Console</p>
-//                   <p className="text-[11px] text-zinc-500">Automate recurring medical profile telemetry pipelines.</p>
-//                 </div>
-//               </div>
-//               <button className="w-full sm:w-auto px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 rounded-lg text-xs font-mono flex items-center justify-center gap-2 transition-all">
-//                 Connect Engine <ExternalLink size={12} />
-//               </button>
-//             </div>
-
-//           </div>
-//         </div>
-
-//         {/* --- SYSTEM LEGAL VALIDATION LEGALESE --- */}
-//         <div className="mt-8 pt-6 border-t border-zinc-900 flex flex-col items-center text-center text-zinc-600 font-mono text-[10px] leading-relaxed tracking-wide">
-//           <div className="w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center mb-3">
-//             <Sparkles size={10} className="text-zinc-700" />
-//           </div>
-//           <p className="max-w-3xl italic">
-//             This tracking framework interprets localized patterns as automated inference markers. Always cross-verify prescription layouts and clinical timelines against professional board-certified human MD overview structures before committing to real-world deployment.
-//           </p>
-//         </div>
-
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MedicationPage;
-
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Printer,
-  MapPin,
-  ArrowLeft,
-  Pill,
-  Utensils,
-  Dumbbell,
-  ShieldAlert,
-  CheckCircle2,
-  Clock,
-  ExternalLink,
-  Activity,
-  Cpu,
-  Layers,
-  Sparkles
+  ArrowLeft, Printer, MapPin, LocateFixed, Search, ExternalLink, AlertTriangle, Clock, Utensils, Lightbulb, CalendarCheck, Apple, Dumbbell, ShieldCheck, Eye,
 } from 'lucide-react';
-import { DiseaseInfo } from '../data/medicalData';
+import type { DiseaseInfo } from '../data/medicalData';
+import { describeAll, FOOD_TEXT, SLOT_INFO } from '../lib/medicineGuide';
+import { printSlip, buildSlipHtml } from '../lib/medicalSlip';
+import { loadBookings } from '../lib/appointments';
+import MedicineImage from './MedicineImage';
+import FollowUpTimeline from './FollowUpTimeline';
 
-interface MedicationPageProps {
+interface Props {
   info: DiseaseInfo;
+  symptoms: string[];
+  onBook: () => void;
   onBack: () => void;
-  history: { disease: string, date: string, symptoms: number }[];
+  history: { disease: string; date: string; symptoms: number }[];
 }
 
-const MedicationPage: React.FC<MedicationPageProps> = ({ info, onBack, history }) => {
-  const handlePrint = () => {
-    const formatText = (text: string, wordsPerLine = 8) => {
-      const words = text.split(" ");
-      let result = "";
-      
-      for (let i = 0; i < words.length; i++) {
-        if (i % wordsPerLine === 0) result += "\n";
-        result += words[i] + " ";
-      }
+const field = 'w-full bg-zinc-950/50 border border-white/10 rounded-xl py-2.5 px-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50';
+const lab = 'block text-[10px] font-mono font-black uppercase tracking-widest text-zinc-500 mb-1';
 
-      return result;
-    };
+const MedicationPage: React.FC<Props> = ({ info, symptoms, onBook, onBack }) => {
+  const items = useMemo(() => describeAll(info.Medication), [info]);
+  const meds = items.filter(i => i.profile.form !== 'care' && i.profile.form !== 'procedure');
+  const care = items.filter(i => i.profile.form === 'care' || i.profile.form === 'procedure');
 
-    const printContent = `
-===============================
-        MEDICAL SLIP
-===============================
+  const last = useMemo(() => loadBookings()[0], []);
+  const [patient, setPatient] = useState({ name: last?.name ?? '', age: last?.age ?? '', gender: last?.gender ?? '', phone: last?.phone ?? '', city: last?.city ?? '' });
+  const [city, setCity] = useState(last?.city ?? '');
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [geoErr, setGeoErr] = useState('');
+  const [term, setTerm] = useState('pharmacy');
+  const [showMap, setShowMap] = useState(false);
 
-Agent: Dr.HMF AI SYSTEM
+  const place = coords ? `${coords.lat},${coords.lng}` : city.trim();
+  const mapQuery = place ? `${term} near ${place}` : '';
+  const mapsLink = (t: string) => `https://www.google.com/maps/search/${encodeURIComponent(`${t} pharmacy near ${place || 'me'}`)}`;
 
--------------------------------
-DISEASE
--------------------------------
-${info.Disease}
-
--------------------------------
-DESCRIPTION
--------------------------------
-${formatText(info.Description)}
-
--------------------------------
-MEDICATIONS
--------------------------------
-${info.Medication.map(m => `- ${m}`).join("\n")}
-
--------------------------------
-DIET PLAN
--------------------------------
-${info.Diet.map(d => `- ${d}`).join("\n")}
-
--------------------------------
-WORKOUT PLAN
--------------------------------
-${info.Workouts.map(w => `- ${w}`).join("\n")}
-
--------------------------------
-PRECAUTIONS
--------------------------------
-- ${info.Precaution_1}
-- ${info.Precaution_2}
-- ${info.Precaution_3}
-- ${info.Precaution_4}
-
-===============================
-DATE: ${new Date().toLocaleString()}
-
-        AI GENERATED REPORT
-===============================
-`;
-
-    const newWindow = window.open("", "_blank");
-
-    if (newWindow) {
-      newWindow.document.write(`<pre style="font-family: monospace; font-size: 12px;">${printContent}</pre>`);
-      newWindow.document.close();
-      newWindow.print();
-    }
+  const locate = () => {
+    setGeoErr('');
+    if (!navigator.geolocation) { setGeoErr('Location is not available in this browser. Type your city instead.'); return; }
+    navigator.geolocation.getCurrentPosition(
+      p => { setCoords({ lat: +p.coords.latitude.toFixed(4), lng: +p.coords.longitude.toFixed(4) }); setShowMap(true); },
+      () => setGeoErr('Could not get your location. Allow location access or type your city.'),
+      { timeout: 10000 },
+    );
   };
 
-  const findPharmacy = () => {
-    window.open(`https://www.google.com/search?q=pharmacy+near+me+${info.Disease}+medication`, '_blank');
+  const slipInput = { info, symptoms, patient };
+  const preview = () => {
+    const w = window.open('', '_blank');
+    if (w) { w.document.write(buildSlipHtml(slipInput)); w.document.close(); }
   };
 
   return (
-    <div className="pt-20 md:pt-24 pb-20 md:pb-28 min-h-screen bg-[#030407] text-[#e2e8f0] font-sans relative overflow-hidden selection:bg-cyan-500/30">
-      {/* Background Tech Aesthetic Coordinates */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e905_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e905_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-cyan-900/10 blur-[120px] md:blur-[160px] rounded-full pointer-events-none" />
+    <div className="pt-28 pb-24 min-h-screen bg-[#020204] text-white">
+      <div className="max-w-6xl mx-auto px-6 space-y-8">
+        <button onClick={onBack} className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-zinc-400 hover:text-cyan-400 cursor-pointer"><ArrowLeft size={14} />Back to prediction</button>
 
-      <div className="max-w-6xl mx-auto px-4 relative z-10">
-        
-        {/* --- GLOBAL APP HEADER BAR --- */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-cyan-900/30 pb-4 mb-6 no-print text-[10px] md:text-[11px] font-mono tracking-widest text-zinc-500">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-            <span>DR.HMF AI SYSTEM // MED_PAGE</span>
+        <header className="grid md:grid-cols-[1fr_auto] gap-6 items-end">
+          <div>
+            <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-400 font-black mb-2">Treatment summary</p>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter capitalize leading-none">{info.Disease}</h2>
+            <p className="text-zinc-400 mt-4 max-w-3xl leading-relaxed">{info.Description}</p>
           </div>
-          <div className="flex items-center justify-between sm:justify-end gap-4">
-            <span>MESH_SYNC: <span className="text-cyan-400">100%</span></span>
-            <span>MODE: <span className="text-amber-500">PRIORITY_PROTOCOL</span></span>
+          <div className="flex gap-2 no-print">
+            <button onClick={preview} className="px-4 py-3 rounded-xl border border-white/10 text-xs font-bold hover:bg-white/5 flex items-center gap-2 cursor-pointer"><Eye size={14} />Preview slip</button>
+            <button onClick={() => printSlip(slipInput)} className="px-5 py-3 rounded-xl bg-cyan-500 text-black text-xs font-black uppercase tracking-widest hover:bg-white flex items-center gap-2 cursor-pointer"><Printer size={14} />Print medical slip</button>
           </div>
-        </div>
+        </header>
 
-        {/* --- ACTIONS & NAVIGATION CONTROL --- */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6 md:mb-8 no-print">
-          <button
-            onClick={onBack}
-            className="flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-950/40 text-zinc-400 hover:text-white hover:border-zinc-700 transition-all group font-mono text-xs tracking-wider"
-          >
-            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-            <span>RETURN TO VECTOR</span>
-          </button>
-          
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button
-              onClick={handlePrint}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 md:px-5 py-2.5 bg-zinc-900/60 border border-zinc-800 hover:border-cyan-500/40 hover:text-cyan-400 text-xs font-mono rounded-lg transition-all"
-            >
-              <Printer size={14} /> Print Protocol
-            </button>
-            <button
-              onClick={findPharmacy}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 md:px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-black font-mono font-bold text-xs rounded-lg transition-all shadow-[0_0_25px_rgba(6,182,212,0.15)]"
-            >
-              <MapPin size={14} /> Global Pharmacy
-            </button>
+        {/* Medicine cards */}
+        <section>
+          <h3 className="font-black uppercase tracking-tight mb-4">Medicine summary</h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            {meds.map((m, idx) => (
+              <motion.article key={m.raw} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (idx % 4) * 0.05 }}
+                className="rounded-3xl border border-white/10 bg-zinc-950/50 p-5 flex gap-4">
+                <div className="shrink-0"><MedicineImage form={m.profile.form} color={m.profile.color} size={92} /></div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-mono uppercase tracking-wider font-black" style={{ color: m.profile.color }}>{m.profile.label} · {m.profile.form}</p>
+                  <h4 className="text-lg font-black leading-tight">{m.name}</h4>
+                  {m.examples.length > 0 && <p className="text-xs text-zinc-500">e.g. {m.examples.join(', ')}</p>}
+                  <p className="text-[13px] text-zinc-300 mt-2 leading-snug">{m.profile.purpose}</p>
+                  <ul className="mt-3 space-y-1 text-[12px] text-zinc-400">
+                    <li className="flex gap-2"><Clock size={13} className="shrink-0 mt-0.5 text-cyan-400" />{m.profile.asNeeded ? 'Only when needed' : m.profile.slots.map(s => `${SLOT_INFO[s].label} ${SLOT_INFO[s].time}`).join(' · ')}</li>
+                    <li className="flex gap-2"><Utensils size={13} className="shrink-0 mt-0.5 text-cyan-400" />{FOOD_TEXT[m.profile.food]}</li>
+                    <li className="flex gap-2"><CalendarCheck size={13} className="shrink-0 mt-0.5 text-cyan-400" />{m.profile.duration}</li>
+                    <li className="flex gap-2"><Lightbulb size={13} className="shrink-0 mt-0.5 text-cyan-400" />{m.profile.tip}</li>
+                  </ul>
+                  {m.profile.warning && <p className="mt-2 text-[12px] text-amber-300 flex gap-2"><AlertTriangle size={13} className="shrink-0 mt-0.5" />{m.profile.warning}</p>}
+                  {m.searchTerm && place && (
+                    <a href={mapsLink(m.searchTerm)} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-cyan-400 hover:underline"><MapPin size={12} />Find near you<ExternalLink size={10} /></a>
+                  )}
+                </div>
+              </motion.article>
+            ))}
           </div>
-        </div>
-
-        {/* --- INTEGRATED CORE DIAGNOSTIC CONSOLE --- */}
-        {/* Responsive Grid Layout Order altered using flex/grid properties for mobile-first hierarchy */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          
-          {/* PRIMARY CONTENT BLOCK: Force to display first on mobile using Tailwind order rules */}
-          <div className="order-1 lg:order-2 lg:col-span-8 flex flex-col gap-6">
-            
-            {/* PRIMARY CONTEXT & DESCRIPTION HEADER */}
-            <div className="p-5 md:p-8 bg-gradient-to-br from-zinc-950 to-[#07080c] border border-zinc-900 rounded-xl relative overflow-hidden">
-              <div className="absolute -right-16 -top-16 w-48 h-48 bg-cyan-500/[0.01] rounded-full blur-3xl pointer-events-none" />
-              
-              <div className="flex items-center gap-2 mb-2">
-                <Layers size={12} className="text-cyan-500" />
-                <span className="text-[9px] font-mono tracking-[0.4em] text-zinc-500 uppercase">Diagnostic Isolate Target</span>
-              </div>
-              
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight italic uppercase mb-3 md:mb-4 text-white">
-                {info.Disease}
-              </h2>
-              
-              <p className="text-xs md:text-sm text-zinc-400 leading-relaxed max-w-3xl">
-                {info.Description}
-              </p>
+          {care.length > 0 && (
+            <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+              <h4 className="text-xs font-mono font-black uppercase tracking-widest text-zinc-400 mb-2">Care, therapy and procedures</h4>
+              <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-zinc-300 list-disc pl-5">{care.map(c => (<li key={c.raw}>{c.name}</li>))}</ul>
             </div>
+          )}
+          <p className="text-[11px] text-zinc-500 mt-3">Pictures are illustrations of the medicine type, not of a specific brand. Doses are not shown on purpose: your doctor or pharmacist sets them for you.</p>
+        </section>
 
-            {/* MAPPED CLINICAL LIFESTYLE PROTOCOLS */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* NUTRITION SCHEDULING CONTAINER */}
-              <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl relative">
-                <div className="flex items-center justify-between mb-4 border-b border-zinc-900 pb-3">
-                  <h4 className="text-xs font-bold tracking-tight text-zinc-200 flex items-center gap-2">
-                    <Utensils size={14} className="text-green-500" /> Diet Plan Mapping
-                  </h4>
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                </div>
-                <ul className="space-y-2.5">
-                  {info.Diet.map((d, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-xs text-zinc-400 group">
-                      <CheckCircle2 size={12} className="text-green-600/70 shrink-0 mt-0.5 group-hover:text-green-400 transition-colors" />
-                      <span className="leading-snug">{d}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        {/* Daily plan */}
+        <section className="rounded-3xl border border-white/10 bg-zinc-950/40 p-6 md:p-8">
+          <h3 className="font-black uppercase tracking-tight mb-5">Daily follow-up</h3>
+          <FollowUpTimeline items={items} />
+        </section>
 
-              {/* WORKOUT / REGIME PROTOCOLS CONTAINER */}
-              <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl relative">
-                <div className="flex items-center justify-between mb-4 border-b border-zinc-900 pb-3">
-                  <h4 className="text-xs font-bold tracking-tight text-zinc-200 flex items-center gap-2">
-                    <Dumbbell size={14} className="text-blue-500" /> Workout Plan Regime
-                  </h4>
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                </div>
-                <ul className="space-y-2.5">
-                  {info.Workouts.map((w, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-xs text-zinc-400 group">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 mt-1.5 group-hover:scale-150 transition-transform" />
-                      <span className="leading-snug">{w}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-            </div>
-
-            {/* CRITICAL SAFELINES / PRECAUTIONS MODULE */}
-            <div className="p-5 bg-gradient-to-br from-amber-500/[0.02] to-zinc-950 border border-amber-500/10 rounded-xl relative overflow-hidden">
-              <div className="hidden sm:block absolute top-0 right-0 p-3 text-[9px] font-mono border-b border-l border-amber-500/10 text-amber-500 bg-amber-500/[0.02] uppercase tracking-wider rounded-bl-lg">
-                Status: Critical Oversight Required
-              </div>
-              
-              <h4 className="text-xs font-bold uppercase text-amber-500 tracking-wider flex items-center gap-2 mb-4">
-                <ShieldAlert size={14} /> Priority Safelines
-              </h4>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[info.Precaution_1, info.Precaution_2, info.Precaution_3, info.Precaution_4].map((p, i) => (
-                  <div key={i} className="p-3 bg-zinc-950 border border-zinc-900 hover:border-amber-500/20 rounded-lg flex items-center gap-3 transition-colors">
-                    <span className="font-mono text-xs font-black text-amber-500/20">#0{i + 1}</span>
-                    <span className="text-xs text-zinc-400 leading-tight font-medium">{p}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
+        {/* Nearby */}
+        <section className="rounded-3xl border border-white/10 bg-zinc-950/40 p-6 md:p-8">
+          <h3 className="font-black uppercase tracking-tight mb-1 flex items-center gap-2"><MapPin size={16} className="text-cyan-400" />Available near you</h3>
+          <p className="text-sm text-zinc-400 mb-5">Find pharmacies and hospitals in your area on the map. Call before you go to confirm that the medicine is in stock.</p>
+          <div className="grid md:grid-cols-[1fr_auto_auto] gap-3 items-end">
+            <div><label className={lab} htmlFor="md-city">Your city or area</label><input id="md-city" className={field} value={city} onChange={e => { setCity(e.target.value); setCoords(null); }} placeholder="e.g. Johar Town, Lahore" /></div>
+            <button onClick={locate} className="px-4 py-2.5 rounded-xl border border-white/10 text-xs font-bold hover:bg-white/5 flex items-center gap-2 cursor-pointer"><LocateFixed size={14} />Use my location</button>
+            <button disabled={!place} onClick={() => setShowMap(true)} className="px-5 py-2.5 rounded-xl bg-cyan-500 text-black text-xs font-black uppercase tracking-widest hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"><Search size={14} />Search</button>
           </div>
-
-          {/* SIDEBAR TELEMETRY PANEL: Displays second on mobile devices */}
-          <div className="order-2 lg:order-1 lg:col-span-4 flex flex-col gap-6">
-            
-            {/* PHARMACOLOGICAL VECTOR MODULE */}
-            <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl flex-1 flex flex-col min-h-[250px] lg:min-h-0">
-              <h3 className="text-[10px] font-mono font-black text-cyan-500 tracking-[0.3em] uppercase mb-4 flex items-center gap-1.5">
-                <Pill size={12} /> Advanced Medication
-              </h3>
-              
-              <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
-                {info.Medication.map((med, i) => (
-                  <div key={i} className="p-3 bg-zinc-900/40 border border-zinc-900 rounded-lg flex items-start gap-3 group hover:border-zinc-800 transition-colors">
-                    <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-cyan-950 border border-cyan-900/50 text-cyan-400 rounded">
-                      #0{i + 1}
-                    </span>
-                    <p className="text-xs text-zinc-300 font-medium leading-tight pt-0.5">
-                      {med}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* META STATE MODULE */}
-            <div className="p-5 bg-zinc-950 border border-zinc-900 rounded-xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-16 h-16 bg-cyan-500/[0.02] border-b border-l border-cyan-500/10 rounded-bl-xl flex items-center justify-center text-cyan-500">
-                <Cpu size={14} />
-              </div>
-              
-              <h3 className="text-[10px] font-mono font-black text-cyan-500 tracking-[0.3em] uppercase mb-4 flex items-center gap-1.5">
-                <Activity size={10} /> Intelligence Summary
-              </h3>
-
-              <div className="space-y-2 text-xs font-mono">
-                <div className="flex justify-between p-2 rounded bg-zinc-900/30 border border-zinc-900">
-                  <span className="text-zinc-500">System Trace</span>
-                  <span className="text-zinc-300 font-bold">AUTH-Z-24</span>
-                </div>
-                <div className="flex justify-between p-2 rounded bg-zinc-900/30 border border-zinc-900">
-                  <span className="text-zinc-500">Confidence Match</span>
-                  <span className="text-green-400 font-bold">90%</span>
-                </div>
-                <div className="flex justify-between p-2 rounded bg-zinc-900/30 border border-zinc-900">
-                  <span className="text-zinc-500">Session ID</span>
-                  <span className="text-zinc-400">#440932</span>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-zinc-900">
-                <div className="flex justify-between text-[10px] font-mono text-zinc-500 mb-1.5">
-                  <span>NEURAL INTEGRITY MATCH</span>
-                  <span>100%</span>
-                </div>
-                <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ x: "-100%" }}
-                    animate={{ x: "100%" }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                    className="w-1/2 h-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* NEURAL PIPELINE AUTOMATION FOOTNOTE */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-zinc-950 border border-zinc-900 rounded-xl no-print">
-              <div className="flex items-center gap-3 text-left w-full sm:w-auto">
-                <Clock size={16} className="text-zinc-600 shrink-0" />
-                <div>
-                  <p className="text-xs font-bold text-zinc-300">Neural Subscription Console</p>
-                  <p className="text-[11px] text-zinc-500">Automate medical profile telemetry pipelines.</p>
-                </div>
-              </div>
-              <button className="w-full sm:w-auto px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 rounded-lg text-xs font-mono flex items-center justify-center gap-2 transition-all">
-                Connect Engine <ExternalLink size={12} />
-              </button>
-            </div>
-
+          {geoErr && <p className="text-amber-300 text-xs mt-2" role="alert">{geoErr}</p>}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {['pharmacy', '24 hour pharmacy', 'hospital', 'clinic', 'laboratory'].map(t => (
+              <button key={t} onClick={() => { setTerm(t); if (place) setShowMap(true); }} aria-pressed={term === t}
+                className={`px-3 py-1.5 rounded-full border text-xs cursor-pointer ${term === t ? 'border-cyan-400 bg-cyan-500/10 text-cyan-300' : 'border-white/10 text-zinc-400 hover:bg-white/5'}`}>{t}</button>
+            ))}
           </div>
+          {showMap && place && (
+            <div className="mt-5 rounded-2xl overflow-hidden border border-white/10">
+              <iframe title="Nearby map" className="w-full h-80 bg-zinc-900" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`} />
+              <a href={`https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}`} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 py-3 text-xs font-bold text-cyan-400 hover:bg-white/5">Open in Google Maps<ExternalLink size={12} /></a>
+            </div>
+          )}
+        </section>
 
-        </div>
+        {/* Lifestyle */}
+        <section className="grid md:grid-cols-3 gap-4">
+          <div className="rounded-3xl border border-white/10 bg-zinc-950/40 p-6"><h4 className="font-black mb-3 flex items-center gap-2"><Apple size={16} className="text-cyan-400" />Diet</h4><ul className="space-y-1.5 text-sm text-zinc-300 list-disc pl-5">{info.Diet.map(d => (<li key={d}>{d}</li>))}</ul></div>
+          <div className="rounded-3xl border border-white/10 bg-zinc-950/40 p-6"><h4 className="font-black mb-3 flex items-center gap-2"><Dumbbell size={16} className="text-cyan-400" />Activity</h4><ul className="space-y-1.5 text-sm text-zinc-300 list-disc pl-5">{info.Workouts.map(d => (<li key={d}>{d}</li>))}</ul></div>
+          <div className="rounded-3xl border border-white/10 bg-zinc-950/40 p-6"><h4 className="font-black mb-3 flex items-center gap-2"><ShieldCheck size={16} className="text-cyan-400" />Precautions</h4><ul className="space-y-1.5 text-sm text-zinc-300 list-disc pl-5">{[info.Precaution_1, info.Precaution_2, info.Precaution_3, info.Precaution_4].filter(Boolean).map(d => (<li key={d}>{d}</li>))}</ul></div>
+        </section>
 
-        {/* --- SYSTEM LEGAL VALIDATION LEGALESE --- */}
-        <div className="mt-8 pt-6 border-t border-zinc-900 flex flex-col items-center text-center text-zinc-600 font-mono text-[10px] leading-relaxed tracking-wide">
-          <div className="w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center mb-3">
-            <Sparkles size={10} className="text-zinc-700" />
+        {/* Slip details */}
+        <section className="rounded-3xl border border-cyan-500/20 bg-cyan-500/[0.04] p-6 md:p-8 no-print">
+          <h3 className="font-black uppercase tracking-tight mb-1 flex items-center gap-2"><Printer size={16} className="text-cyan-400" />Medical slip</h3>
+          <p className="text-sm text-zinc-400 mb-5">Add the patient details to print on the slip. Leave blank to write them by hand.</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {(['name', 'age', 'gender', 'phone', 'city'] as const).map(k => (
+              <div key={k}><label className={lab} htmlFor={`sl-${k}`}>{k}</label><input id={`sl-${k}`} className={field} value={patient[k]} onChange={e => setPatient(p => ({ ...p, [k]: e.target.value }))} /></div>
+            ))}
           </div>
-          <p className="max-w-3xl italic px-2">
-            This tracking framework interprets localized patterns as automated inference markers. Always cross-verify prescription layouts and clinical timelines against professional board-certified human MD overview structures before committing to real-world deployment.
-          </p>
-        </div>
-
+          <div className="flex flex-wrap gap-3 mt-5">
+            <button onClick={() => printSlip(slipInput)} className="px-6 py-3.5 rounded-xl bg-cyan-500 text-black text-xs font-black uppercase tracking-widest hover:bg-white flex items-center gap-2 cursor-pointer"><Printer size={14} />Print medical slip</button>
+            <button onClick={onBook} className="px-6 py-3.5 rounded-xl border border-cyan-500/40 text-cyan-300 text-xs font-black uppercase tracking-widest hover:bg-cyan-500/10 flex items-center gap-2 cursor-pointer"><CalendarCheck size={14} />Book a doctor to sign it</button>
+          </div>
+          <p className="text-[11px] text-zinc-500 mt-3">The slip is information generated by AI. It is not a prescription until a licensed doctor reviews and signs it.</p>
+        </section>
       </div>
     </div>
   );
