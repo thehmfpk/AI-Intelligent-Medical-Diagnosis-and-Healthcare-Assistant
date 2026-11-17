@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import HeroSection from './HeroSection';
 import { 
   ArrowRight, ShieldCheck, Microscope, Cpu, 
   HeartPulse, Scan, Globe, Brain, BriefcaseMedical, Wind
@@ -42,67 +43,7 @@ const HomePage: React.FC<HomePageProps> = ({ onStart, onAqi }) => {
       {/* --- GLOBAL HOME CONSOLE: RESPONSIVE CONTENT CONTAINER --- */}
       <div className="max-w-[1600px] mx-auto w-full px-4 md:px-10 lg:px-16 relative z-10 flex flex-col gap-16 md:gap-20 pb-28">
         
-        {/* --- SECTION 1: HERO (60/40 Split) --- */}
-        {/* Optimizing top padding (pt-24 md:pt-32) to accommodate the global header and mode bar */}
-        <section className="relative min-h-[90vh] flex items-center pt-24 md:pt-32 pb-16 border-b border-white/5 overflow-hidden">
-          {/* Background glow matrix */}
-          <div className="absolute bottom-1/4 left-12 w-[300px] h-[300px] bg-blue-600/5 blur-[120px] rounded-full pointer-events-none" />
-          
-          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-            
-            {/* Left Side: Content */}
-            <motion.div 
-              className="lg:col-span-7 flex flex-col justify-center order-2 lg:order-1 text-center lg:text-left"
-              initial="initial"
-              animate="animate"
-              variants={staggerContainer}
-            >
-              <motion.div variants={fadeInUp} className="flex items-center gap-5 mb-6 justify-center lg:justify-start">
-                <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
-                <span className="text-[10px] md:text-[11px] font-mono tracking-[0.5em] text-cyan-400 uppercase font-black">System_Active: Protocol_v4</span>
-              </motion.div>
-              
-              <motion.h1 variants={fadeInUp} className="text-5xl md:text-[90px] lg:text-[90px] xl:text-[80px] font-black tracking-tighter leading-[0.85] italic uppercase mb-8">
-                The companion<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-400 to-blue-600">your health deserves.</span>
-              </motion.h1>
-
-              <motion.p variants={fadeInUp} className="text-zinc-400 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 font-light leading-relaxed mb-12">
-                Autonomous clinical intelligence engineered for precision. We bridge the gap between <span className="text-white">raw biometric data</span> and definitive medical action.
-              </motion.p>
-
-              <motion.div variants={fadeInUp} className="flex flex-wrap gap-6 justify-center lg:justify-start">
-                <button onClick={onStart} className="group px-10 py-5 bg-cyan-500 text-black font-black uppercase text-xs tracking-[0.3em] rounded-full hover:bg-white transition-all flex items-center gap-4 shadow-[0_0_40px_rgba(6,182,212,0.3)] cursor-pointer">
-                  Let's Begin Checkup <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
-                </button>
-                <button onClick={onAqi} className="px-10 py-5 border border-white/10 text-white font-black uppercase text-xs tracking-[0.3em] rounded-full hover:bg-white/5 transition-all cursor-pointer flex items-center gap-3">
-                  <Wind size={16} /> Live AQI Map
-                </button>
-              </motion.div>
-            </motion.div>
-
-            {/* Right Side: Centered Robot/AI Visual */}
-            <div className="lg:col-span-5 w-full flex items-center justify-center order-1 lg:order-2">
-              <motion.div 
-                className="relative w-full max-w-[320px] md:max-w-[450px] lg:max-w-none aspect-square rounded-[2rem] md:rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] bg-zinc-950 group"
-                initial={{ opacity: 0, scale: 0.92, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <img 
-                  src="https://images.stockcake.com/public/c/1/e/c1ef72e8-0b70-472f-bad6-56391bd20e69_large/robotics-healthcare-aid-stockcake.jpg" 
-                  alt="AI Medical Agent"
-                  className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#020204] via-transparent to-transparent opacity-60" />
-                
-                {/* Decorative Corner Tech Borders */}
-                <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-cyan-500/40" />
-                <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-cyan-500/40" />
-              </motion.div>
-            </div>
-          </div>
-        </section>
+        <HeroSection onStart={onStart} onAqi={onAqi} />
 
         {/* --- SECTION 2: THE DATA GRID (WITH THEME GRADIENT FIX) --- */}
         <section className="relative w-full rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/5 px-6 py-16 md:p-16 lg:p-20">
