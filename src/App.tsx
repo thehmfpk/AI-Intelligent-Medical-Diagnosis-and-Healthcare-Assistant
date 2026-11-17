@@ -8,14 +8,16 @@ import ResultPage from './components/ResultPage';
 import MedicationPage from './components/MedicationPage';
 import ContactPage from './components/ContactPage';
 import ChatAssistant from './components/ChatAssistant';
-import { medicalEncyclopedia, diseaseSymptomMatrix, DiseaseInfo } from './data/medicalData';
-import { DisplayMode } from './data/symptomTranslations';
-import { usePersistentState } from './lib/usePersistentState';
+import AppointmentPage from './components/AppointmentPage';
+import PredictionAnimation from './components/PredictionAnimation';
+import { rankDiseases, RankedDisease } from './lib/predictor';
+import { medicalEncyclopedia, DiseaseInfo } from './data/medicalData';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  // Which language(s) symptom names are shown in (shared by the symptom list and the chat).
-  const [displayMode, setDisplayMode] = usePersistentState<DisplayMode>('dr_hmf_symptom_lang', 'both');
+  const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [ranking, setRanking] = useState<RankedDisease[]>([]);
+  const [pending, setPending] = useState<string[] | null>(null);
   const [predictedDisease, setPredictedDisease] = useState<string>('');
   const [selectedDiseaseInfo, setSelectedDiseaseInfo] = useState<DiseaseInfo | null>(null);
   const [history, setHistory] = useState<{ disease: string, date: string, symptoms: number }[]>([]);
@@ -41,36 +43,24 @@ export default function App() {
     setCurrentPage('analysis');
   };
 
-  const handleLearnMore = () => {
-    const section = document.getElementById('info-section');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+  // Starts the "doctor typing" animation; the result is computed when it ends.
+  const handleAnalyze = (picked: string[]) => {
+    if (picked.length === 0) return;
+    setPending(picked);
   };
 
-  const handleAnalyze = (symptoms: string[]) => {
-    let bestMatch = "";
-    let maxOverlap = -1;
-
-    diseaseSymptomMatrix.forEach(entry => {
-      const overlap = symptoms.filter(s => entry.symptoms.includes(s)).length;
-      if (overlap > maxOverlap) {
-        maxOverlap = overlap;
-        bestMatch = entry.disease;
-      }
-    });
-
-    const newEntry = {
-      disease: bestMatch,
-      date: new Date().toISOString(),
-      symptoms: symptoms.length
-    };
-
+  const finishPrediction = () => {
+    if (!pending) return;
+    const ranked = rankDiseases(pending);
+    const best = ranked[0]?.disease ?? '';
+    const newEntry = { disease: best, date: new Date().toISOString(), symptoms: pending.length };
     const updatedHistory = [newEntry, ...history].slice(0, 5);
     setHistory(updatedHistory);
-    localStorage.setItem('dr_hmf_history', JSON.stringify(updatedHistory));
-
-    setPredictedDisease(bestMatch);
+    try { localStorage.setItem('dr_hmf_history', JSON.stringify(updatedHistory)); } catch { /* ignore */ }
+    setSymptoms(pending);
+    setRanking(ranked);
+    setPredictedDisease(best);
+    setPending(null);
     setCurrentPage('result');
   };
 
@@ -106,7 +96,7 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <HomePage onStart={handleStartAnalysis} onLearn={handleLearnMore} />
+              <HomePage onStart={handleStartAnalysis} onBook={() => setCurrentPage('appointment')} />
             </motion.div>
           )}
 
@@ -120,8 +110,6 @@ export default function App() {
             >
               <AnalysisPage
                 onAnalyze={handleAnalyze}
-                displayMode={displayMode}
-                onDisplayModeChange={setDisplayMode}
                 onOpenChat={() => setCurrentPage('chat')}
               />
             </motion.div>
@@ -135,11 +123,7 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
-              <ChatAssistant
-                onAnalyze={handleAnalyze}
-                displayMode={displayMode}
-                onDisplayModeChange={setDisplayMode}
-              />
+              <ChatAssistant onAnalyze={handleAnalyze} />
             </motion.div>
           )}
 
@@ -152,8 +136,12 @@ export default function App() {
               transition={{ duration: 0.5 }}
             >
               <ResultPage
-                disease={predictedDisease}
+                symptoms={symptoms}
+                ranking={ranking}
+                onRerun={handleAnalyze}
                 onCheckMedication={handleCheckMedication}
+                onBook={() => setCurrentPage('appointment')}
+                onNewCheckup={() => setCurrentPage('analysis')}
                 history={history}
               />
             </motion.div>
@@ -169,9 +157,17 @@ export default function App() {
             >
               <MedicationPage
                 info={selectedDiseaseInfo}
+                symptoms={symptoms}
+                onBook={() => setCurrentPage('appointment')}
                 onBack={() => setCurrentPage('result')}
                 history={history}
               />
+            </motion.div>
+          )}
+
+          {currentPage === 'appointment' && (
+            <motion.div key="appointment" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
+              <AppointmentPage knownSymptoms={symptoms} onStartCheckup={() => setCurrentPage('analysis')} />
             </motion.div>
           )}
 
@@ -188,6 +184,10 @@ export default function App() {
           )}
         </AnimatePresence>
       </main>
+
+      <AnimatePresence>
+        {pending && <PredictionAnimation symptomCount={pending.length} onDone={finishPrediction} />}
+      </AnimatePresence>
 
       <Footer setCurrentPage={setCurrentPage} />
 

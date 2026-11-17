@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Mic, MicOff, Send, Volume2, VolumeX, RotateCcw, Sparkles, X, Bot, User, Info, ListChecks } from 'lucide-react';
+import { Mic, MicOff, Send, Volume2, VolumeX, RotateCcw, Sparkles, X, User, Info, ListChecks, Activity, ShieldCheck } from 'lucide-react';
 import { DisplayMode } from '../data/symptomTranslations';
 import { Lang } from '../lib/symptomMatcher';
 import { BotTurn, ChatState, greetingText, respond, respondToTap, label } from '../lib/chatEngine';
 import { usePersistentState } from '../lib/usePersistentState';
 import SymptomName from './SymptomName';
-import LanguageToggle from './LanguageToggle';
+import DoctorAvatar from './DoctorAvatar';
+import { rankDiseases, matchStrength } from '../lib/predictor';
+import { browserPrefersUrdu } from '../lib/autoLanguage';
 
 // --- Web Speech API (not in lib.dom.d.ts for every TS version) ---------------
 
@@ -83,12 +85,18 @@ const UI = {
 
 interface ChatAssistantProps {
   onAnalyze: (symptoms: string[]) => void;
-  displayMode: DisplayMode;
-  onDisplayModeChange: (mode: DisplayMode) => void;
 }
 
-const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, onDisplayModeChange }) => {
-  const initialLang: Lang = displayMode === 'ur' ? 'ur' : 'en';
+/** Small round doctor face used as the bot's avatar. */
+const BotFace: React.FC<{ talking?: boolean }> = ({ talking }) => (
+  <div className="w-9 h-9 rounded-full shrink-0 overflow-hidden bg-gradient-to-b from-cyan-400/30 to-cyan-900/30 border border-cyan-400/40 relative">
+    <div className="absolute left-1/2 -translate-x-1/2 top-[2px]"><DoctorAvatar size={52} speaking={talking} /></div>
+  </div>
+);
+
+const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze }) => {
+  // The language is detected from what the person types (or the device), never chosen by hand.
+  const initialLang: Lang = browserPrefersUrdu() ? 'ur' : 'en';
 
   const [saved, setSaved] = usePersistentState<Saved>(
     'dr_hmf_chat_v1',
@@ -101,6 +109,8 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
     'session'
   );
   const { messages, selected, asked, lang } = saved;
+  const displayMode: DisplayMode = lang === 'ur' ? 'ur' : browserPrefersUrdu() ? 'both' : 'en';
+  const likely = useMemo(() => rankDiseases(selected, 3), [selected]);
 
   const [input, setInput] = useState('');
   const [listening, setListening] = useState(false);
@@ -234,14 +244,6 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
     });
   };
 
-  const changeChatLanguage = (mode: DisplayMode) => {
-    const l: Lang = mode === 'ur' ? 'ur' : 'en';
-    setSaved(prev => ({ ...prev, lang: l }));
-    // Keep the symptom names in step with the chosen language.
-    onDisplayModeChange(mode === 'ur' ? 'ur' : displayMode === 'ur' ? 'en' : displayMode);
-    recognitionRef.current?.abort();
-  };
-
   // --- Voice input -------------------------------------------------------------
 
   const stopListening = () => {
@@ -314,9 +316,7 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
         <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-cyan-500 flex items-center justify-center">
-                <Bot className="text-black" size={20} />
-              </div>
+              <BotFace talking={thinking} />
               <h2 className={`text-2xl md:text-3xl font-black tracking-tight ${rtl ? 'font-urdu' : ''}`} dir={rtl ? 'rtl' : 'ltr'}>
                 {UI.title[lang]}
               </h2>
@@ -327,7 +327,7 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <LanguageToggle mode={lang === 'ur' ? 'ur' : displayMode === 'ur' ? 'en' : displayMode} onChange={changeChatLanguage} />
+            <span className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-white/5 bg-zinc-950/60 text-[11px] font-mono text-zinc-400"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />Auto language: {lang === 'ur' ? 'اردو' : 'English'}</span>
             <button
               type="button"
               onClick={() => {
@@ -370,11 +370,11 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
                   className={`flex gap-3 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-lg shrink-0 flex items-center justify-center ${
-                      m.role === 'user' ? 'bg-white/10 text-zinc-300' : m.warning ? 'bg-amber-500/20 text-amber-300' : 'bg-cyan-500/15 text-cyan-300'
+                    className={`${m.role === 'bot' && !m.warning ? '' : 'w-8 h-8 rounded-lg shrink-0 flex items-center justify-center'} ${
+                      m.role === 'user' ? 'bg-white/10 text-zinc-300' : m.warning ? 'bg-amber-500/20 text-amber-300' : ''
                     }`}
                   >
-                    {m.role === 'user' ? <User size={15} /> : <Bot size={15} />}
+                    {m.role === 'user' ? <User size={15} /> : m.warning ? <Info size={15} /> : <BotFace />}
                   </div>
 
                   <div className="max-w-[85%] min-w-0">
@@ -384,10 +384,10 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
                         /[؀-ۿ]/.test(m.text) ? 'font-urdu text-base' : ''
                       } ${
                         m.role === 'user'
-                          ? 'bg-cyan-500 text-black rounded-tr-md'
+                          ? 'bg-gradient-to-br from-cyan-400 to-cyan-500 text-black rounded-tr-md shadow-[0_6px_20px_rgba(6,182,212,0.25)]'
                           : m.warning
                             ? 'bg-amber-500/10 border border-amber-500/30 text-amber-100 rounded-tl-md'
-                            : 'bg-zinc-900/70 border border-white/5 text-zinc-200 rounded-tl-md'
+                            : 'bg-zinc-900/70 border border-white/10 text-zinc-200 rounded-tl-md backdrop-blur'
                       }`}
                     >
                       {m.text}
@@ -404,7 +404,7 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
                               onClick={() => pickSuggestion(c)}
                               className="px-3 py-2 rounded-xl border border-cyan-500/30 bg-cyan-500/5 hover:bg-cyan-500/15 text-xs text-cyan-200 transition-all cursor-pointer text-left"
                             >
-                              <SymptomName symptom={c} mode={lang === 'ur' ? 'ur' : displayMode === 'ur' ? 'en' : displayMode} className="font-mono" />
+                              <SymptomName symptom={c} mode={displayMode} className="font-mono" />
                             </button>
                           ))}
                       </div>
@@ -415,9 +415,7 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
 
               {thinking && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-cyan-500/15 text-cyan-300 flex items-center justify-center">
-                    <Bot size={15} />
-                  </div>
+                  <BotFace talking />
                   <div className="px-4 py-3 rounded-2xl bg-zinc-900/70 border border-white/5 flex items-center gap-1.5" aria-label="typing">
                     {[0, 1, 2].map(i => (
                       <span key={i} className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: `${i * 120}ms` }} />
@@ -429,6 +427,16 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
 
             {/* Input bar */}
             <div className="border-t border-white/5 p-3 sm:p-4 bg-black/40">
+              {!messages.some(m => m.role === 'user') && (
+                <div className="flex gap-2 overflow-x-auto pb-3 -mx-1 px-1">
+                  {(rtl
+                    ? ['مجھے بخار اور سر درد ہے', 'کھانسی اور گلے میں درد', 'پیٹ میں درد اور الٹی', 'سینے میں درد']
+                    : ['I have fever and headache', 'Cough and sore throat', 'Stomach pain and vomiting', 'Skin rash and itching']
+                  ).map(q => (
+                    <button key={q} type="button" onClick={() => send(q)} className={`shrink-0 px-3.5 py-2 rounded-full border border-white/10 bg-white/[0.03] text-xs text-zinc-300 hover:border-cyan-400/50 hover:text-cyan-200 transition-colors cursor-pointer ${rtl ? 'font-urdu text-sm' : ''}`}>{q}</button>
+                  ))}
+                </div>
+              )}
               {(listening || micNotice) && (
                 <p
                   className={`mb-2 text-xs px-1 ${listening ? 'text-cyan-300' : 'text-amber-300'} ${rtl ? 'font-urdu text-sm' : ''}`}
@@ -513,7 +521,7 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
                         className="flex items-center justify-between gap-2 p-3 bg-zinc-900/40 rounded-xl border border-white/[0.04] text-xs"
                       >
                         <span className="min-w-0 flex-1">
-                          <SymptomName symptom={s} mode={displayMode === 'ur' || lang === 'ur' ? (displayMode === 'both' ? 'both' : 'ur') : displayMode} className="font-mono text-zinc-200" />
+                          <SymptomName symptom={s} mode={displayMode} className="font-mono text-zinc-200" />
                         </span>
                         <button
                           type="button"
@@ -540,6 +548,25 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze, displayMode, o
                 {UI.analyze[lang]}
                 <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
               </button>
+            </div>
+
+            <div className="p-5 rounded-[2rem] bg-gradient-to-b from-zinc-950 to-black border border-white/5">
+              <h3 className={`font-black tracking-tight flex items-center gap-2 mb-4 ${rtl ? 'font-urdu text-lg' : 'uppercase text-sm'}`} dir={rtl ? 'rtl' : 'ltr'}>
+                <Activity size={16} className="text-cyan-400" /> {rtl ? 'ممکنہ بیماریاں (لائیو)' : 'Likely conditions (live)'}
+              </h3>
+              {likely.length === 0 ? (
+                <p className={`text-sm text-zinc-600 text-center py-3 ${rtl ? 'font-urdu' : ''}`} dir={rtl ? 'rtl' : 'ltr'}>{rtl ? 'علامات بتائیں تو یہاں اندازہ نظر آئے گا۔' : 'Tell me a symptom and a live estimate appears here.'}</p>
+              ) : (
+                <ul className="space-y-3">
+                  {likely.map(r => (
+                    <li key={r.disease}>
+                      <div className="flex justify-between text-xs mb-1"><span className="capitalize text-zinc-200 font-semibold truncate pr-2">{r.disease}</span><span className="font-mono text-zinc-400">{r.match}%</span></div>
+                      <div className="h-1.5 rounded-full bg-white/10 overflow-hidden"><motion.div className={`h-full ${matchStrength(r.match) === 'strong' ? 'bg-emerald-400' : matchStrength(r.match) === 'moderate' ? 'bg-amber-400' : 'bg-orange-400'}`} initial={{ width: 0 }} animate={{ width: `${r.match}%` }} transition={{ duration: 0.5 }} /></div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p className="mt-3 flex items-start gap-2 text-[10px] text-zinc-600 leading-snug"><ShieldCheck size={12} className="shrink-0 mt-0.5" />{rtl ? 'یہ علامات کی مطابقت ہے، تشخیص نہیں۔ اس کے بعد "تجزیہ کریں" دبائیں۔' : 'Symptom match only, not a diagnosis. Press Analyze for the full report.'}</p>
             </div>
 
             <div className="flex items-start gap-3 p-4 bg-zinc-950 rounded-2xl border border-white/5">

@@ -1,231 +1,60 @@
-// import React, { useState, useMemo } from 'react';
-// import { motion, AnimatePresence } from 'framer-motion';
-// import { Search, X, Check, BrainCircuit, Activity, Info, ChevronRight, Filter } from 'lucide-react';
-// import { symptomCategories } from '../data/medicalData';
-
-// interface AnalysisPageProps {
-//   onAnalyze: (selectedSymptoms: string[]) => void;
-// }
-
-// const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze }) => {
-//   const [selected, setSelected] = useState<string[]>([]);
-//   const [search, setSearch] = useState('');
-//   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
-//   const toggleSymptom = (s: string) => {
-//     setSelected(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
-//   };
-
-//   const categories = Object.keys(symptomCategories);
-  
-//   const filteredSymptoms = useMemo(() => {
-//     let result: { category: string, symptoms: string[] }[] = [];
-    
-//     Object.entries(symptomCategories).forEach(([category, symptoms]) => {
-//       const matched = symptoms.filter(s => s.toLowerCase().includes(search.toLowerCase()));
-//       if (matched.length > 0) {
-//         if (!activeCategory || activeCategory === category) {
-//           result.push({ category, symptoms: matched });
-//         }
-//       }
-//     });
-
-//     return result;
-//   }, [search, activeCategory]);
-
-//   return (
-//     <div className="pt-32 pb-40 min-h-screen bg-[#050505]">
-//       <div className="max-w-7xl mx-auto px-6">
-//         {/* Header Section */}
-//         <div className="mb-16">
-//           <motion.div 
-//             initial={{ opacity: 0, x: -20 }}
-//             animate={{ opacity: 1, x: 0 }}
-//             className="flex items-center gap-3 mb-6"
-//           >
-//             <div className="w-12 h-12 bg-cyan-500 rounded-2xl flex items-center justify-center">
-//               <BrainCircuit className="text-black" size={24} />
-//             </div>
-//             <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tighter">
-//               Diagnostic <span className="text-cyan-500 italic">Interface</span>
-//             </h2>
-//           </motion.div>
-//           <p className="text-gray-500 max-w-xl text-lg leading-relaxed">
-//             Report your current physical indicators. Our neural engine will map these symptoms against thousands of clinical patterns.
-//           </p>
-//         </div>
-
-//         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-//           {/* Main Content: Symptoms Grid */}
-//           <div className="lg:col-span-8">
-//             {/* Search and Filter */}
-//             <div className="flex flex-col md:flex-row gap-4 mb-12">
-//               <div className="relative flex-1">
-//                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
-//                 <input 
-//                   type="text" 
-//                   placeholder="Identify your indicators (e.g. Sharp pain, dizziness)..."
-//                   className="w-full bg-[#0a0a0a] border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-white placeholder:text-gray-700 focus:outline-none focus:border-cyan-500/50 transition-all font-display"
-//                   value={search}
-//                   onChange={(e) => setSearch(e.target.value)}
-//                 />
-//               </div>
-//               <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-//                  <button 
-//                    onClick={() => setActiveCategory(null)}
-//                    className={`px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-//                      activeCategory === null ? 'bg-cyan-500 text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
-//                    }`}
-//                  >
-//                    All Systems
-//                  </button>
-//                  {categories.map(cat => (
-//                    <button
-//                     key={cat}
-//                     onClick={() => setActiveCategory(cat)}
-//                     className={`px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-//                       activeCategory === cat ? 'bg-cyan-500 text-black' : 'bg-white/5 text-gray-400 hover:bg-white/10'
-//                     }`}
-//                    >
-//                      {cat}
-//                    </button>
-//                  ))}
-//               </div>
-//             </div>
-
-//             {/* List */}
-//             <div className="space-y-12 h-[700px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-white/5 hover:scrollbar-thumb-cyan-900/50">
-//                {filteredSymptoms.map((group, idx) => (
-//                  <div key={group.category} className="space-y-6">
-//                     <div className="flex items-center justify-between border-b border-white/5 pb-4">
-//                        <h4 className="text-sm font-mono font-bold uppercase tracking-[0.3em] text-gray-500">{group.category}</h4>
-//                        <span className="text-[10px] text-gray-700 font-bold">{group.symptoms.length} Indicators</span>
-//                     </div>
-//                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-//                        {group.symptoms.map(sym => (
-//                          <button
-//                            key={sym}
-//                            onClick={() => toggleSymptom(sym)}
-//                            className={`group flex items-center justify-between p-5 rounded-2xl border text-sm transition-all duration-300 ${
-//                              selected.includes(sym) 
-//                                ? 'bg-cyan-500 border-cyan-400 text-black font-bold shadow-[0_0_20px_rgba(34,211,238,0.2)]'
-//                                : 'bg-white/[0.02] border-white/5 text-gray-400 hover:border-cyan-500/30 hover:bg-white/5'
-//                            }`}
-//                          >
-//                            <span className="truncate pr-2">{sym}</span>
-//                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
-//                               selected.includes(sym) ? 'bg-black border-black text-cyan-400' : 'border-gray-800'
-//                            }`}>
-//                               {selected.includes(sym) && <Check size={12} strokeWidth={3} />}
-//                            </div>
-//                          </button>
-//                        ))}
-//                     </div>
-//                  </div>
-//                ))}
-
-//                {filteredSymptoms.length === 0 && (
-//                  <div className="flex flex-col items-center justify-center py-20 text-center">
-//                     <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
-//                        <Filter className="text-gray-600" size={32} />
-//                     </div>
-//                     <p className="text-gray-500 font-display text-xl px-4">No matching symptoms found. Refine your query or check another system.</p>
-//                  </div>
-//                )}
-//             </div>
-//           </div>
-
-//           {/* Sidebar Area: Review & Analyze */}
-//           <div className="lg:col-span-4 lg:sticky lg:top-32">
-//             <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-zinc-900/80 to-black border border-white/5 backdrop-blur-xl">
-//                <div className="flex items-center justify-between mb-10">
-//                   <h3 className="text-2xl font-display font-bold tracking-tight">Active Report</h3>
-//                   <div className="px-4 py-1.5 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-mono font-bold uppercase rounded-full">
-//                      {selected.length} Selected
-//                   </div>
-//                </div>
-
-//                <div className="space-y-3 mb-12 max-h-[300px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/5">
-//                   <AnimatePresence>
-//                     {selected.length === 0 ? (
-//                       <motion.div 
-//                         initial={{ opacity: 0 }} 
-//                         animate={{ opacity: 1 }} 
-//                         className="text-center py-8"
-//                       >
-//                          <p className="text-gray-600 text-sm leading-relaxed">
-//                            Waiting for symptom input. Please select indicators from the left panel to begin analysis.
-//                          </p>
-//                       </motion.div>
-//                     ) : (
-//                       selected.map(sym => (
-//                         <motion.div
-//                           key={sym}
-//                           initial={{ opacity: 0, x: 20 }}
-//                           animate={{ opacity: 1, x: 0 }}
-//                           exit={{ opacity: 0, scale: 0.95 }}
-//                           className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 text-xs text-gray-300"
-//                         >
-//                           <span className="truncate mr-2 font-medium">{sym}</span>
-//                           <button 
-//                             onClick={() => toggleSymptom(sym)}
-//                             className="w-6 h-6 flex items-center justify-center text-gray-600 hover:text-red-400 transition-colors"
-//                           >
-//                             <X size={14} />
-//                           </button>
-//                         </motion.div>
-//                       ))
-//                     )}
-//                   </AnimatePresence>
-//                </div>
-
-//                <button
-//                  disabled={selected.length === 0}
-//                  onClick={() => onAnalyze(selected)}
-//                  className="group w-full py-5 bg-white disabled:bg-zinc-800 disabled:text-zinc-600 text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl transition-all hover:bg-cyan-400 active:scale-95 flex items-center justify-center gap-3"
-//                >
-//                  Initiate Diagnostics
-//                  <Activity size={18} className="group-hover:animate-pulse" />
-//                </button>
-
-//                <div className="mt-8 flex items-start gap-3 p-4 bg-cyan-500/5 rounded-2xl border border-cyan-500/10">
-//                   <Info className="text-cyan-400 shrink-0 mt-0.5" size={16} />
-//                   <p className="text-[10px] text-gray-500 leading-relaxed font-medium">
-//                     Dr.HMF results are probabilistic. This tool is not a replacement for professional medical consultation. Ensure all serious symptoms are reported to emergency services.
-//                   </p>
-//                </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AnalysisPage;
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Check, BrainCircuit, Activity, Info, Filter, Sparkles, Terminal, MessageCircle } from 'lucide-react';
+import { Search, X, Check, Activity, Info, Filter, Terminal, MessageCircle, Volume2, VolumeX, CheckCircle2 } from 'lucide-react';
 import { symptomCategories } from '../data/medicalData';
-import { DisplayMode } from '../data/symptomTranslations';
 import { symptomMatchesQuery } from '../lib/symptomMatcher';
 import SymptomName from './SymptomName';
-import LanguageToggle from './LanguageToggle';
+import DoctorAvatar from './DoctorAvatar';
+import { useAutoDisplayMode } from '../lib/autoLanguage';
+import { englishLabel, urduLabel } from '../data/symptomTranslations';
 
 interface AnalysisPageProps {
   onAnalyze: (selectedSymptoms: string[]) => void;
-  /** Which language(s) symptom names are shown in. */
-  displayMode: DisplayMode;
-  onDisplayModeChange: (mode: DisplayMode) => void;
   /** Jump to the conversational assistant. */
   onOpenChat: () => void;
 }
 
-const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, displayMode, onDisplayModeChange, onOpenChat }) => {
+const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, onOpenChat }) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [voiceOn, setVoiceOn] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const allSymptoms = useMemo(() => Object.values(symptomCategories).flat() as string[], []);
+  // Language is detected automatically: Urdu script or Roman Urdu typed in search, else the device language.
+  const displayMode = useAutoDisplayMode(search, allSymptoms);
+  const lastAdded = selected[selected.length - 1];
+
+  const doctorLine = useMemo(() => {
+    if (!lastAdded) {
+      return {
+        en: "Hello, I'm Dr. HMF. Select the symptoms you feel, one by one, and I will guide you.",
+        ur: 'السلام علیکم، میں ڈاکٹر ایچ ایم ایف ہوں۔ جو علامات آپ محسوس کر رہے ہیں وہ ایک ایک کر کے منتخب کریں۔',
+      };
+    }
+    return {
+      en: `Noted: ${englishLabel(lastAdded)}. Is there anything else you feel?`,
+      ur: `نوٹ کر لیا: ${urduLabel(lastAdded) || englishLabel(lastAdded)}۔ کیا آپ کچھ اور بھی محسوس کر رہے ہیں؟`,
+    };
+  }, [lastAdded]);
+
+  // The doctor "talks" briefly whenever the line changes; the voice is optional and off by default.
+  const timer = useRef<number>();
+  useEffect(() => {
+    setSpeaking(true);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setSpeaking(false), Math.min(4500, 900 + doctorLine.en.length * 38));
+    if (voiceOn && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const urdu = displayMode !== 'en' && /[\u0600-\u06FF]/.test(search);
+      const u = new SpeechSynthesisUtterance(urdu ? doctorLine.ur : doctorLine.en);
+      u.lang = urdu ? 'ur-PK' : 'en-US';
+      u.rate = 0.95;
+      window.speechSynthesis.speak(u);
+    }
+    return () => window.clearTimeout(timer.current);
+  }, [doctorLine, voiceOn]);
+  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
   const toggleSymptom = (s: string) => {
     setSelected(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
@@ -301,25 +130,12 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, displayMode, onD
             
             {/* Filter and Input Controls */}
             <div className="space-y-6">
-              {/* Language switch + shortcut to the chat assistant */}
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <LanguageToggle mode={displayMode} onChange={onDisplayModeChange} />
-                <button
-                  type="button"
-                  onClick={onOpenChat}
-                  className="flex items-center gap-2 px-4 py-3 rounded-xl border border-cyan-500/30 bg-cyan-500/5 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-widest hover:bg-cyan-500/15 transition-all cursor-pointer"
-                >
-                  <MessageCircle size={14} /> Talk to the assistant
-                  <span className="font-urdu text-sm normal-case tracking-normal">· اسسٹنٹ سے بات کریں</span>
-                </button>
-              </div>
-
               {/* Immersive Tech Search Bar */}
               <div className="relative group">
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-cyan-400 transition-colors" size={18} />
                 <input 
                   type="text" 
-                  placeholder="Search symptoms in English or Urdu — fever, بخار, bukhar…"
+                  placeholder="Search a symptom in English or Urdu — fever, بخار, bukhar…"
                   className="w-full bg-zinc-950/50 border border-white/5 rounded-2xl py-5 pl-16 pr-6 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-cyan-500/30 focus:bg-black/80 transition-all font-mono tracking-wide shadow-inner"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -441,6 +257,31 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, displayMode, onD
                 </div>
               </div>
 
+              {/* AI doctor: always looks at the patient and guides the next step */}
+              <div className="relative z-10 mb-6 rounded-2xl border border-cyan-500/20 bg-cyan-500/[0.04] p-4">
+                <div className="flex items-start gap-3">
+                  <div className="shrink-0 w-24 -mb-4 overflow-hidden rounded-xl bg-gradient-to-b from-cyan-500/10 to-transparent">
+                    <DoctorAvatar size={96} speaking={speaking} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="text-[10px] font-mono font-black uppercase tracking-widest text-cyan-400">Dr. HMF</span>
+                      <button
+                        type="button"
+                        onClick={() => { setVoiceOn(v => { if (v) window.speechSynthesis?.cancel(); return !v; }); }}
+                        aria-pressed={voiceOn}
+                        aria-label={voiceOn ? 'Turn doctor voice off' : 'Turn doctor voice on'}
+                        className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 hover:text-cyan-400 transition-colors cursor-pointer"
+                      >
+                        {voiceOn ? <Volume2 size={12} /> : <VolumeX size={12} />} {voiceOn ? 'Voice on' : 'Voice off'}
+                      </button>
+                    </div>
+                    <p className="text-[13px] leading-snug text-zinc-200">{doctorLine.en}</p>
+                    {displayMode !== 'en' && <p className="font-urdu text-sm leading-relaxed text-cyan-200/90 mt-1" dir="rtl">{doctorLine.ur}</p>}
+                  </div>
+                </div>
+              </div>
+
               {/* Selected List Console */}
               <div className="space-y-2.5 mb-10 max-h-[320px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-zinc-900 relative z-10">
                 <AnimatePresence mode="popLayout">
@@ -479,15 +320,29 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, displayMode, onD
                 </AnimatePresence>
               </div>
 
-              {/* Action Trigger Button */}
+              {/* Done: starts the prediction animation */}
               <button
                 disabled={selected.length === 0}
                 onClick={() => onAnalyze(selected)}
                 className="group w-full py-5 bg-cyan-500 disabled:bg-zinc-900 text-black disabled:text-zinc-600 font-black uppercase tracking-[0.25em] text-xs rounded-xl transition-all hover:bg-white active:scale-[0.98] flex items-center justify-center gap-3 relative z-10 cursor-pointer shadow-[0_0_30px_rgba(6,182,212,0.2)] disabled:shadow-none"
               >
-                COMPILE METRICS
-                <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
+                Done <CheckCircle2 size={16} className="group-hover:scale-110 transition-transform" />
               </button>
+
+              {/* Can't find the disease? Talk to the AI chat */}
+              <div className="relative z-10 mt-4 rounded-xl border border-white/5 bg-zinc-900/30 p-4 text-center">
+                <p className="text-[12px] text-zinc-400 leading-snug">
+                  Can't find your disease here? You can also talk to our AI Chat.
+                </p>
+                <p className="font-urdu text-sm text-zinc-500 mt-1" dir="rtl">اگر آپ کو اپنی بیماری یہاں نہ ملے تو AI چیٹ سے بھی بات کر سکتے ہیں۔</p>
+                <button
+                  type="button"
+                  onClick={onOpenChat}
+                  className="mt-3 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-cyan-500/30 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-widest hover:bg-cyan-500/15 transition-all cursor-pointer"
+                >
+                  <MessageCircle size={14} /> Talk to AI Chat
+                </button>
+              </div>
 
               {/* Legal Tech Disclaimer */}
               <div className="mt-8 flex items-start gap-3.5 p-4 bg-zinc-950 rounded-xl border border-white/5 relative z-10">
