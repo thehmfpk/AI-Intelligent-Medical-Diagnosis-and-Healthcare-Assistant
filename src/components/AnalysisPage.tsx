@@ -2,7 +2,9 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Check, Activity, Info, Filter, Terminal, MessageCircle, Volume2, VolumeX, CheckCircle2 } from 'lucide-react';
 import { symptomCategories } from '../data/medicalData';
-import { symptomMatchesQuery } from '../lib/symptomMatcher';
+import { symptomMatchesQuery, extractSymptoms } from '../lib/symptomMatcher';
+import { useSpeechInput } from '../lib/useSpeechInput';
+import MicButton from './MicButton';
 import SymptomName from './SymptomName';
 import DoctorAvatar from './DoctorAvatar';
 import { useAutoDisplayMode } from '../lib/autoLanguage';
@@ -24,6 +26,15 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, onOpenChat }) =>
   // Language is detected automatically: Urdu script or Roman Urdu typed in search, else the device language.
   const displayMode = useAutoDisplayMode(search, allSymptoms);
   const lastAdded = selected[selected.length - 1];
+  const [heard, setHeard] = useState<{ text: string; added: string[] } | null>(null);
+
+  // Voice: speak symptoms in English, Urdu or Roman Urdu and they are added to the list.
+  const mic = useSpeechInput(text => {
+    const { found } = extractSymptoms(text);
+    setSelected(prev => [...prev, ...found.filter(f => !prev.includes(f))]);
+    setHeard({ text, added: found });
+    setSearch('');
+  });
 
   const doctorLine = useMemo(() => {
     if (!lastAdded) {
@@ -136,12 +147,23 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, onOpenChat }) =>
                 <input 
                   type="text" 
                   placeholder="Search a symptom in English or Urdu — fever, بخار, bukhar…"
-                  className="w-full bg-zinc-950/50 border border-white/5 rounded-2xl py-5 pl-16 pr-6 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-cyan-500/30 focus:bg-black/80 transition-all font-mono tracking-wide shadow-inner"
+                  className="w-full bg-zinc-950/50 border border-white/5 rounded-2xl py-5 pl-16 pr-36 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-cyan-500/30 focus:bg-black/80 transition-all font-mono tracking-wide shadow-inner"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] font-mono text-zinc-700 pointer-events-none border border-zinc-800/60 px-2 py-1 rounded">SYS_SRCH_v4</div>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <MicButton supported={mic.supported} listening={mic.listening} onStart={l => { setHeard(null); mic.start(l); }} onStop={mic.stop} />
+                </div>
               </div>
+              {(mic.listening || mic.error || heard) && (
+                <div className="px-1 text-xs" role="status" aria-live="polite">
+                  {mic.listening && <p className="text-cyan-300">Listening… speak your symptoms{mic.interim ? `: "${mic.interim}"` : ''} <span className="font-urdu">· بولیں</span></p>}
+                  {!mic.listening && mic.error && <p className="text-amber-300">{mic.error}</p>}
+                  {!mic.listening && !mic.error && heard && (heard.added.length > 0
+                    ? <p className="text-emerald-300">Heard "{heard.text}" — added: {heard.added.map(englishLabel).join(', ')}. Anything else?</p>
+                    : <p className="text-amber-300">Heard "{heard.text}" but found no symptom. Try again, e.g. "fever and headache" or "bukhar aur sar dard".</p>)}
+                </div>
+              )}
 
               {/* High Tech Category Tabs */}
               <div className="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-none border-b border-white/[0.03]">
@@ -277,7 +299,7 @@ const AnalysisPage: React.FC<AnalysisPageProps> = ({ onAnalyze, onOpenChat }) =>
                       </button>
                     </div>
                     <p className="text-[13px] leading-snug text-zinc-200">{doctorLine.en}</p>
-                    {displayMode !== 'en' && <p className="font-urdu text-sm leading-relaxed text-cyan-200/90 mt-1" dir="rtl">{doctorLine.ur}</p>}
+                    {<p className="font-urdu text-sm leading-relaxed text-cyan-200/90 mt-1" dir="rtl">{doctorLine.ur}</p>}
                   </div>
                 </div>
               </div>

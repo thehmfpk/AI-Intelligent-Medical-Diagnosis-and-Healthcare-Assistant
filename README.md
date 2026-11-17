@@ -53,6 +53,7 @@ The project combines machine learning (a trained neural network on 96,088 record
 | **Ranked prediction** | Top conditions with a symptom-match score, editable symptoms, and a re-run that does not reload the site |
 | **Medicine map and follow-up** | What each suggested medicine is for, with a morning / afternoon / evening / night plan |
 | **Treatment redesign** | Medicine cards with illustrations, nearby pharmacy map, and a one-page A4 medical slip |
+| **Voice symptom entry** | A mic button on the Analysis search bar, the appointment reason box and the prediction editor: speak in English, Urdu or Roman Urdu and the symptoms are added automatically (Chrome / Edge) |
 | **Advanced chat UI** | Doctor avatar, live "likely conditions" panel, quick-start prompts, automatic language |
 | **Project report** | A formal report covering the problem, dataset, model, design and testing |
 

@@ -109,7 +109,7 @@ const ChatAssistant: React.FC<ChatAssistantProps> = ({ onAnalyze }) => {
     'session'
   );
   const { messages, selected, asked, lang } = saved;
-  const displayMode: DisplayMode = lang === 'ur' ? 'ur' : browserPrefersUrdu() ? 'both' : 'en';
+  const displayMode: DisplayMode = 'both';
   const likely = useMemo(() => rankDiseases(selected, 3), [selected]);
 
   const [input, setInput] = useState('');

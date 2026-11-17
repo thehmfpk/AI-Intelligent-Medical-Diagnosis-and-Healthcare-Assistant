@@ -10,6 +10,9 @@ import {
   composeConfirmation, confirmationText, buildIcs, pickLang,
 } from '../lib/appointments';
 import { browserPrefersUrdu } from '../lib/autoLanguage';
+import { useSpeechInput } from '../lib/useSpeechInput';
+import SymptomName from './SymptomName';
+import MicButton from './MicButton';
 import type { Lang } from '../lib/symptomMatcher';
 
 interface Props {
@@ -36,6 +39,9 @@ const AppointmentPage: React.FC<Props> = ({ knownSymptoms = [], onStartCheckup }
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [k]: e.target.value }));
+
+  // Voice: dictate the visit reason; it is appended to what is already written.
+  const mic = useSpeechInput(text => setForm(f => ({ ...f, reason: (f.reason ? f.reason + ' ' : '') + text })));
 
   // The AI step: read the reason, suggest department and urgency.
   const tri = useMemo(() => triage(form.reason, knownSymptoms), [form.reason, knownSymptoms]);
@@ -197,7 +203,12 @@ const AppointmentPage: React.FC<Props> = ({ knownSymptoms = [], onStartCheckup }
                 <div className="sm:col-span-2"><label className={label} htmlFor="ap-city"><MapPin size={10} className="inline mr-1" />City</label><input id="ap-city" className={input} value={form.city} onChange={set('city')} placeholder="e.g. Lahore" autoComplete="address-level2" />{err('city')}</div>
                 <div className="sm:col-span-2">
                   <label className={label} htmlFor="ap-reason">What brings you in? (English, اردو or Roman Urdu)</label>
-                  <textarea id="ap-reason" rows={3} className={input} value={form.reason} onChange={set('reason')} placeholder="e.g. bukhar aur sar dard 2 din se hai" />
+                  <div className="relative">
+                    <textarea id="ap-reason" rows={3} className={input + ' pr-4 pb-12'} value={form.reason} onChange={set('reason')} placeholder="e.g. bukhar aur sar dard 2 din se hai" />
+                    <div className="absolute right-2 bottom-2"><MicButton supported={mic.supported} listening={mic.listening} onStart={mic.start} onStop={mic.stop} /></div>
+                  </div>
+                  {mic.listening && <p className="text-cyan-300 text-xs mt-1" role="status">Listening… {mic.interim}</p>}
+                  {!mic.listening && mic.error && <p className="text-amber-300 text-xs mt-1" role="alert">{mic.error}</p>}
                   {knownSymptoms.length > 0 && !form.reason && (
                     <button type="button" onClick={() => setForm(f => ({ ...f, reason: knownSymptoms.join(', ') }))} className="mt-2 text-[11px] text-cyan-400 hover:underline cursor-pointer">Use symptoms from my checkup ({knownSymptoms.length})</button>
                   )}
@@ -266,7 +277,7 @@ const AppointmentPage: React.FC<Props> = ({ knownSymptoms = [], onStartCheckup }
                 <p className="font-urdu text-[13px] text-zinc-500 mt-1" dir="rtl">{tri.reasons.ur}</p>
               </div>
               {tri.symptoms.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mb-4">{tri.symptoms.slice(0, 8).map(s => (<span key={s} className="px-2 py-1 rounded-md bg-white/5 text-[11px] text-zinc-300">{s}</span>))}</div>
+                <div className="flex flex-wrap gap-1.5 mb-4">{tri.symptoms.slice(0, 8).map(s => (<span key={s} className="px-2 py-1 rounded-md bg-white/5 text-[11px] text-zinc-300"><SymptomName symptom={s} mode="both" /></span>))}</div>
               )}
               <div className={`rounded-xl p-3 text-xs font-bold ${tri.urgency === 'emergency' ? 'bg-red-500/10 border border-red-500/40 text-red-300' : tri.urgency === 'priority' ? 'bg-amber-500/10 border border-amber-500/30 text-amber-300' : 'bg-white/5 text-zinc-300'}`}>
                 Priority: {URGENCY_LABEL[tri.urgency].en}

@@ -6,7 +6,10 @@ import {
 import { medicalEncyclopedia, symptomCategories } from '../data/medicalData';
 import { RankedDisease, matchStrength } from '../lib/predictor';
 import { describeAll } from '../lib/medicineGuide';
-import { hasRedFlag, symptomMatchesQuery } from '../lib/symptomMatcher';
+import { hasRedFlag, symptomMatchesQuery, extractSymptoms } from '../lib/symptomMatcher';
+import { useSpeechInput } from '../lib/useSpeechInput';
+import MicButton from './MicButton';
+import SymptomName from './SymptomName';
 import MedicineImage from './MedicineImage';
 import FollowUpTimeline from './FollowUpTimeline';
 
@@ -36,6 +39,8 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
   const [q, setQ] = useState('');
   // Reset the editor when a new prediction arrives
   React.useEffect(() => { setEdit(symptoms); setPick(0); }, [symptoms, ranking]);
+
+  const mic = useSpeechInput(text => setEdit(e => [...e, ...extractSymptoms(text).found.filter(f => !e.includes(f))]));
 
   const current = ranking[pick];
   const info = current ? findInfo(current.disease) : undefined;
@@ -76,8 +81,8 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter capitalize leading-none">{current.disease}</h2>
             {info && <p className="text-zinc-400 mt-4 max-w-2xl leading-relaxed">{info.Description}</p>}
             <div className="mt-5 flex flex-wrap gap-2">
-              {current.matched.map(s => (<span key={s} className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px]">✓ {s}</span>))}
-              {current.unexplained.map(s => (<span key={s} className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-400 text-[11px]" title="Not usually listed for this condition">{s}</span>))}
+              {current.matched.map(s => (<span key={s} className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px]"><span className="inline-flex items-center gap-1.5">✓ <SymptomName symptom={s} mode="both" /></span></span>))}
+              {current.unexplained.map(s => (<span key={s} className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-400 text-[11px]" title="Not usually listed for this condition"><SymptomName symptom={s} mode="both" /></span>))}
             </div>
             {current.missing.length > 0 && <p className="text-[12px] text-zinc-500 mt-3">Also common with this condition, and worth checking: {current.missing.slice(0, 5).join(', ')}.</p>}
           </div>
@@ -115,20 +120,23 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
             <div className="flex flex-wrap gap-2 mb-4">
               {edit.map(s => (
                 <span key={s} className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-200 text-xs">
-                  {s}<button aria-label={`Remove ${s}`} onClick={() => setEdit(e => e.filter(x => x !== s))} className="w-5 h-5 rounded-full hover:bg-white/10 flex items-center justify-center cursor-pointer"><X size={11} /></button>
+                  <SymptomName symptom={s} mode="both" /><button aria-label={`Remove ${s}`} onClick={() => setEdit(e => e.filter(x => x !== s))} className="w-5 h-5 rounded-full hover:bg-white/10 flex items-center justify-center cursor-pointer"><X size={11} /></button>
                 </span>
               ))}
               {edit.length === 0 && <span className="text-sm text-zinc-500">Add at least one symptom.</span>}
             </div>
             <div className="relative mb-4">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-              <input value={q} onChange={e => setQ(e.target.value)} placeholder="Add a symptom (English, اردو, Roman Urdu)" className="w-full bg-zinc-950/50 border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50" />
+              <div className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10"><MicButton supported={mic.supported} listening={mic.listening} onStart={mic.start} onStop={mic.stop} /></div>
+              <input value={q} onChange={e => setQ(e.target.value)} placeholder="Add a symptom (type or speak)" className="w-full bg-zinc-950/50 border border-white/10 rounded-xl py-2.5 pl-9 pr-32 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500/50" />
               {suggestions.length > 0 && (
                 <ul className="absolute z-20 left-0 right-0 mt-1 rounded-xl border border-white/10 bg-zinc-950 shadow-xl overflow-hidden">
-                  {suggestions.map(s => (<li key={s}><button onClick={() => { setEdit(e => [...e, s]); setQ(''); }} className="w-full text-left px-3 py-2 text-sm hover:bg-white/5 flex items-center gap-2 cursor-pointer"><Plus size={12} className="text-cyan-400" />{s}</button></li>))}
+                  {suggestions.map(s => (<li key={s}><button onClick={() => { setEdit(e => [...e, s]); setQ(''); }} className="w-full text-left px-3 py-2 text-sm hover:bg-white/5 flex items-center gap-2 cursor-pointer"><Plus size={12} className="text-cyan-400 shrink-0" /><SymptomName symptom={s} mode="both" /></button></li>))}
                 </ul>
               )}
             </div>
+            {mic.listening && <p className="text-cyan-300 text-xs mb-2" role="status">Listening… {mic.interim}</p>}
+            {!mic.listening && mic.error && <p className="text-amber-300 text-xs mb-2" role="alert">{mic.error}</p>}
             <button disabled={edit.length === 0} onClick={() => onRerun(edit)}
               className={`w-full py-3.5 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${changed ? 'bg-cyan-500 text-black hover:bg-white' : 'border border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10'}`}>
               <RotateCcw size={14} />{changed ? 'Re-run prediction with changes' : 'Re-run prediction'}
