@@ -4,7 +4,7 @@ import {
   ArrowRight, AlertTriangle, RefreshCw, X, Plus, CalendarCheck, Stethoscope, Pill, CalendarClock, ShieldCheck, RotateCcw, Search,
 } from 'lucide-react';
 import { medicalEncyclopedia, symptomCategories } from '../data/medicalData';
-import { RankedDisease, matchStrength } from '../lib/predictor';
+import { RankedDisease } from '../lib/predictor';
 import { describeAll } from '../lib/medicineGuide';
 import { hasRedFlag, symptomMatchesQuery, extractSymptoms } from '../lib/symptomMatcher';
 import { useSpeechInput } from '../lib/useSpeechInput';
@@ -27,11 +27,6 @@ const ALL = Object.values(symptomCategories).flat() as string[];
 const titleCase = (s: string) => s.replace(/\b\w/g, c => c.toUpperCase());
 const findInfo = (d: string) => medicalEncyclopedia[Object.keys(medicalEncyclopedia).find(k => k.toLowerCase() === d.toLowerCase()) ?? ''];
 
-const STRENGTH = {
-  strong: { text: 'Strong match', cls: 'text-emerald-400', ring: '#34d399' },
-  moderate: { text: 'Moderate match', cls: 'text-amber-400', ring: '#fbbf24' },
-  weak: { text: 'Weak match', cls: 'text-orange-400', ring: '#fb923c' },
-};
 
 const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedication, onBook, onNewCheckup, history }) => {
   const [pick, setPick] = useState(0);
@@ -61,9 +56,6 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
     );
   }
 
-  const st = STRENGTH[matchStrength(current.match)];
-  const circ = 2 * Math.PI * 42;
-
   return (
     <div className="pt-28 pb-24 min-h-screen bg-[#020204] text-white">
       <div className="max-w-6xl mx-auto px-6 space-y-8">
@@ -75,7 +67,7 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
         )}
 
         {/* Top result */}
-        <motion.section key={current.disease} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-white/10 bg-zinc-950/50 p-6 md:p-10 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+        <motion.section key={current.disease} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-white/10 bg-zinc-950/50 p-6 md:p-10">
           <div>
             <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-400 font-black mb-2">{pick === 0 ? 'Most likely condition' : `Option ${pick + 1}`}</p>
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter capitalize leading-none">{current.disease}</h2>
@@ -85,17 +77,6 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
               {current.unexplained.map(s => (<span key={s} className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-400 text-[11px]" title="Not usually listed for this condition"><SymptomName symptom={s} mode="both" /></span>))}
             </div>
             {current.missing.length > 0 && <p className="text-[12px] text-zinc-500 mt-3">Also common with this condition, and worth checking: {current.missing.slice(0, 5).join(', ')}.</p>}
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="relative w-32 h-32">
-              <svg viewBox="0 0 100 100" className="-rotate-90 w-full h-full">
-                <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeOpacity=".12" strokeWidth="9" />
-                <motion.circle cx="50" cy="50" r="42" fill="none" stroke={st.ring} strokeWidth="9" strokeLinecap="round" strokeDasharray={circ}
-                  initial={{ strokeDashoffset: circ }} animate={{ strokeDashoffset: circ * (1 - current.match / 100) }} transition={{ duration: 1, ease: 'easeOut' }} />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center"><span className="text-3xl font-black">{current.match}%</span><span className="text-[9px] font-mono uppercase text-zinc-500">symptom match</span></div>
-            </div>
-            <p className={`mt-2 text-xs font-bold ${st.cls}`}>{st.text}</p>
           </div>
         </motion.section>
 
@@ -107,12 +88,11 @@ const ResultPage: React.FC<Props> = ({ symptoms, ranking, onRerun, onCheckMedica
               {ranking.map((r, i) => (
                 <button key={r.disease} onClick={() => setPick(i)} aria-pressed={i === pick}
                   className={`w-full text-left p-3 rounded-xl border cursor-pointer transition-colors ${i === pick ? 'border-cyan-400 bg-cyan-500/10' : 'border-white/10 hover:bg-white/5'}`}>
-                  <div className="flex justify-between items-center"><span className="font-bold capitalize">{r.disease}</span><span className="text-xs font-mono text-zinc-400">{r.match}%</span></div>
-                  <div className="h-1.5 rounded-full bg-white/10 mt-2 overflow-hidden"><div className="h-full bg-cyan-400" style={{ width: `${r.match}%` }} /></div>
+                  <div className="flex justify-between items-center"><span className="font-bold capitalize">{r.disease}</span><span className="text-[10px] font-mono uppercase text-zinc-500">{i === 0 ? 'Best fit' : `Option ${i + 1}`}</span></div>
                 </button>
               ))}
             </div>
-            <p className="text-[11px] text-zinc-500 mt-3 leading-relaxed">The percentage shows how well your symptoms fit each condition's usual symptom list. It is not a probability of having the disease.</p>
+            <p className="text-[11px] text-zinc-500 mt-3 leading-relaxed">Ordered by how well your symptoms fit each condition's usual symptom list. It is not a diagnosis.</p>
           </section>
 
           <section className="rounded-3xl border border-white/10 bg-zinc-950/40 p-6">
