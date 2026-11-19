@@ -198,10 +198,10 @@ html.light .text-cyan-200, html.light .text-cyan-300 { color: #0e7490; }
 @media (prefers-reduced-motion: reduce) { .hero-dot, .hero-pulse-ring, .hero-sweep { animation: none; } }
 
 /* ---- robot-doctor hero ---- */
-.rbhero { background: radial-gradient(ellipse 55% 50% at 50% 66%, rgba(255,214,102,0.30), transparent 70%), radial-gradient(ellipse 50% 45% at 20% 20%, rgba(255,106,176,0.28), transparent 70%), linear-gradient(165deg, #1a1067 0%, #3a2cc9 42%, #7a35de 78%, #d94fb5 118%); }
-html.light .rbhero { background: radial-gradient(ellipse 55% 50% at 50% 66%, rgba(255,255,255,0.85), transparent 70%), linear-gradient(165deg, #ffe0f0 0%, #e1d6ff 48%, #bfe2ff 100%); }
-.rb-word { background: linear-gradient(180deg, #ffffff 25%, #ffd6f0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-html.light .rb-word { background: linear-gradient(180deg, #1a1067 10%, #6d28d9 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rbhero { background: radial-gradient(ellipse 55% 55% at 50% 70%, rgba(34,211,238,0.20), transparent 70%), radial-gradient(ellipse 45% 40% at 85% 15%, rgba(37,99,235,0.16), transparent 70%), #020204; }
+html.light .rbhero { background: radial-gradient(ellipse 55% 55% at 50% 70%, rgba(14,165,233,0.18), transparent 70%), radial-gradient(ellipse 45% 40% at 85% 15%, rgba(37,99,235,0.10), transparent 70%), #f8fafc; }
+.rb-word { background: linear-gradient(90deg, #ffffff 0%, #67e8f9 55%, #3b82f6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+html.light .rb-word { background: linear-gradient(90deg, #0b1220 0%, #0e7490 55%, #1d4ed8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .rb-title { font-size: clamp(2.5rem, 14.5vw, 5rem); line-height: 0.88; }
 @media (min-width: 640px) { .rb-title { font-size: min(6.7vw, 7.6rem); line-height: 1; } }
 @keyframes rb-tilt { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
@@ -212,4 +212,6 @@ html.light .rb-word { background: linear-gradient(180deg, #1a1067 10%, #6d28d9 1
 .rb-blink { transform-box: fill-box; transform-origin: center; animation: rb-blink 4.5s infinite; }
 .rb-pulse { animation: rb-pulse 1.6s ease-in-out infinite; }
 .rb-bob { animation: rb-bob 6s ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .rb-tilt, .rb-blink, .rb-pulse, .rb-bob { animation: none; } }
+@keyframes rb-read { 0%, 100% { transform: translateX(-3px); } 50% { transform: translateX(3px); } }
+.rb-read { animation: rb-read 2.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .rb-tilt, .rb-blink, .rb-pulse, .rb-bob, .rb-read { animation: none; } }
