@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Wind, Mic, HeartPulse, ShieldCheck, ChevronDown } from 'lucide-react';
+import { ArrowRight, Wind, Mic, HeartPulse, ChevronDown } from 'lucide-react';
 import DoctorAvatar from './DoctorAvatar';
 
 interface Props { onStart: () => void; onAqi: () => void; }
@@ -19,7 +19,7 @@ const HeroSection: React.FC<Props> = ({ onStart, onAqi }) => {
   useEffect(() => { const t = setInterval(() => setI(n => (n + 1) % PHRASES.length), 2200); return () => clearInterval(t); }, []);
 
   return (
-    <section className="relative w-[100vw] ml-[calc(50%-50vw)] min-h-[100svh] lg:h-[100svh] flex items-center pt-24 sm:pt-28 pb-6 sm:pb-8 border-b border-white/5 overflow-hidden">
+    <section className="relative w-[100vw] ml-[calc(50%-50vw)] min-h-[100svh] flex items-center pt-24 sm:pt-28 lg:pt-32 pb-8 lg:pb-10 border-b border-white/5 overflow-hidden">
       {/* animated background */}
       <div className="absolute -top-10 left-[8%] w-[420px] h-[420px] rounded-full bg-cyan-500/15 blur-[120px] hero-orb pointer-events-none" />
       <div className="absolute bottom-0 right-[6%] w-[460px] h-[460px] rounded-full bg-blue-600/15 blur-[130px] hero-orb pointer-events-none" style={{ animationDelay: '-7s' }} />
@@ -33,17 +33,15 @@ const HeroSection: React.FC<Props> = ({ onStart, onAqi }) => {
             <span className="text-[10px] md:text-[11px] font-mono tracking-[0.3em] text-cyan-300 uppercase font-black">AI Medical Assistant · Online</span>
           </motion.div>
 
-          <motion.h1 {...up(0.1)} className="font-black tracking-tighter leading-[0.92] italic uppercase" style={{ fontSize: 'clamp(2.3rem, min(8.4vw, 8.2vh), 5.6rem)' }}>
+          <motion.h1 {...up(0.1)} className="font-black tracking-tighter leading-[0.92] italic uppercase" style={{ fontSize: 'clamp(2.3rem, min(8.4vw, 8.8vh), 7rem)' }}>
             Meet <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-blue-500 hero-shine">Dr.HMF</span>
             <br />your health<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-400 to-blue-600">companion.</span>
           </motion.h1>
 
-          <motion.p {...up(0.2)} className="mt-[2.2vh] text-base sm:text-lg lg:text-[1.35rem] font-semibold text-white/90 tracking-tight">
-            Say it. See it. <span className="text-cyan-300">Understand it.</span>
-          </motion.p>
+          
 
-          <motion.div {...up(0.25)} className="mt-[1.6vh] flex flex-wrap items-center gap-x-3 gap-y-1 justify-center lg:justify-start text-lg md:text-2xl text-zinc-300">
+          <motion.div {...up(0.25)} className="mt-[3vh] flex flex-wrap items-center gap-x-3 gap-y-1 justify-center lg:justify-start text-lg md:text-2xl text-zinc-300">
             <Mic className="text-cyan-400 shrink-0" size={22} />
             <span>Speak or type in</span>
             <span className="relative inline-block min-w-[7.5rem] text-left h-9 overflow-hidden">
@@ -53,11 +51,11 @@ const HeroSection: React.FC<Props> = ({ onStart, onAqi }) => {
             </span>
           </motion.div>
 
-          <motion.p {...up(0.35)} className="mt-[1.8vh] hidden sm:block text-zinc-400 text-sm md:text-base lg:text-[1.02rem] max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
-            Describe how you feel in your own words, by voice or by typing. Dr.HMF listens, matches your symptoms, ranks the most likely conditions and shows you a clear next step: a simple medicine guide, a printable medical slip, and the air quality around you today. Everything in <span className="text-white">English</span>, <span className="font-urdu text-white">اردو</span> and <span className="text-white">Roman Urdu</span>.
+          <motion.p {...up(0.35)} className="mt-[1.6vh] hidden sm:block text-zinc-400 text-sm md:text-base max-w-md mx-auto lg:mx-0 font-light leading-relaxed">
+            Tell the doctor how you feel. Get a clear result, a medicine guide and a printable slip.
           </motion.p>
 
-          <motion.div {...up(0.45)} className="mt-[3.6vh] flex flex-wrap gap-5 justify-center lg:justify-start">
+          <motion.div {...up(0.45)} className="mt-[4vh] flex flex-wrap gap-4 sm:gap-5 justify-center lg:justify-start">
             <button onClick={onStart} className="group relative px-10 py-5 bg-cyan-500 text-black font-black uppercase text-xs tracking-[0.3em] rounded-full hover:bg-white transition-all flex items-center gap-4 shadow-[0_0_50px_rgba(6,182,212,0.45)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] cursor-pointer">
               Let's Begin Checkup <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
             </button>
@@ -66,31 +64,12 @@ const HeroSection: React.FC<Props> = ({ onStart, onAqi }) => {
             </button>
           </motion.div>
 
-          <motion.div {...up(0.6)} className="mt-[3vh] hidden sm:block">
-            <div className="grid grid-cols-3 max-w-xl mx-auto lg:mx-0 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur divide-x divide-white/10">
-              {[
-                { n: '230', l: 'Symptoms understood' },
-                { n: '100', l: 'Conditions covered' },
-                { n: '3', l: 'Languages' },
-              ].map(x => (
-                <div key={x.l} className="px-4 py-[1.2vh] text-center lg:text-left">
-                  <p className="text-xl lg:text-2xl font-black text-cyan-300 leading-none">{x.n}</p>
-                  <p className="mt-1 text-[9px] lg:text-[10px] font-mono uppercase tracking-wider text-zinc-500 leading-tight">{x.l}</p>
-                </div>
-              ))}
-            </div>
-            <ul className="mt-[1.8vh] [@media(max-height:830px)]:hidden flex flex-wrap gap-x-6 gap-y-2 justify-center lg:justify-start text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-              <li className="flex items-center gap-2"><Mic size={13} className="text-cyan-400" />Voice input</li>
-              <li className="flex items-center gap-2"><HeartPulse size={13} className="text-cyan-400" />Medicine guide</li>
-              <li className="flex items-center gap-2"><Wind size={13} className="text-cyan-400" />Live AQI</li>
-              <li className="flex items-center gap-2"><ShieldCheck size={13} className="text-cyan-400" />Guidance, not a prescription</li>
-            </ul>
-          </motion.div>
+          
         </div>
 
         {/* ---------- Right: holographic stage ---------- */}
         <motion.div className="lg:col-span-5 order-1 lg:order-2 flex justify-center" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9, ease }}>
-          <div className="relative mt-3 sm:mt-0 w-[min(68vw,25vh)] h-[min(68vw,25vh)] sm:w-[min(60vw,42vh)] sm:h-[min(60vw,42vh)] lg:w-[min(38vw,64vh)] lg:h-[min(38vw,64vh)]">
+          <div className="relative mt-3 sm:mt-0 w-[min(68vw,25vh)] h-[min(68vw,25vh)] sm:w-[min(60vw,42vh)] sm:h-[min(60vw,42vh)] lg:w-[min(38vw,calc(100svh-15rem))] lg:h-[min(38vw,calc(100svh-15rem))]">
             {/* rings */}
             <div className="absolute inset-0 rounded-full border border-dashed border-cyan-400/40 hero-spin" />
             <div className="absolute inset-[9%] rounded-full border border-cyan-400/20 hero-spin-rev" style={{ borderStyle: 'dotted' }} />
@@ -133,7 +112,7 @@ const HeroSection: React.FC<Props> = ({ onStart, onAqi }) => {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1 text-zinc-600 text-[10px] font-mono uppercase tracking-[0.3em]">
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex [@media(max-height:760px)]:hidden flex-col items-center gap-1 text-zinc-600 text-[10px] font-mono uppercase tracking-[0.3em]">
         Scroll <ChevronDown size={14} className="animate-bounce" />
       </div>
     </section>

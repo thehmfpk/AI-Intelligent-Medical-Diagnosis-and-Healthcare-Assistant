@@ -148,11 +148,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
           : 'py-6 bg-transparent'
         }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 xl:px-10 flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] md:gap-4">
 
         {/* --- Logo Section --- */}
         <div
-          className="flex items-center gap-4 cursor-pointer group"
+          className="flex items-center gap-4 cursor-pointer group justify-self-start"
           onClick={() => setCurrentPage('home')}
         >
           <div className="relative">
@@ -171,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-1">
               DR.<span className="text-cyan-400">HMF</span>
             </h1>
-            <div className="flex items-center gap-1.5">
+            <div className="hidden lg:flex items-center gap-1.5">
               <Activity size={10} className="text-cyan-500 animate-pulse" />
               <span className="text-[10px] text-gray-400 tracking-[0.2em] font-mono uppercase font-bold">Bio-Digital AI</span>
             </div>
@@ -184,7 +184,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             <button
               key={item.id}
               onClick={() => setCurrentPage(item.id)}
-              className={`relative px-3 lg:px-4 xl:px-5 py-2 text-[11px] font-mono uppercase tracking-[0.15em] transition-all duration-300 rounded-full ${currentPage === item.id ? 'text-black' : 'text-gray-400 hover:text-white'
+              className={`relative px-2 lg:px-4 xl:px-5 py-2 text-[10px] lg:text-[11px] whitespace-nowrap font-mono uppercase tracking-[0.15em] transition-all duration-300 rounded-full ${currentPage === item.id ? 'text-black' : 'text-gray-400 hover:text-white'
                 }`}
             >
               <span className="relative z-10">{item.name}</span>
@@ -200,11 +200,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
         </nav>
 
         {/* --- Action Button --- */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4 justify-self-end">
           <ThemeToggle />
           <button
             onClick={() => setCurrentPage('analysis')}
-            className="group relative px-6 py-2.5 bg-transparent overflow-hidden rounded-lg transition-all"
+            className="max-xl:hidden whitespace-nowrap group relative px-6 py-2.5 bg-transparent overflow-hidden rounded-lg transition-all"
           >
             <div className="absolute inset-0 border border-cyan-500/30 group-hover:border-cyan-400 transition-colors rounded-lg" />
             <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan-400" />
