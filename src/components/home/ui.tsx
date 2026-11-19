@@ -17,9 +17,8 @@ export const Band: React.FC<{ tone: Tone; id?: string; children: React.ReactNode
   </section>
 );
 
-export const Head: React.FC<{ eyebrow: string; title: string; accent: string; sub?: string; center?: boolean }> = ({ eyebrow, title, accent, sub, center }) => (
+export const Head: React.FC<{ title: string; accent: string; sub?: string; center?: boolean }> = ({ title, accent, sub, center }) => (
   <Reveal className={`mb-10 sm:mb-14 ${center ? 'text-center mx-auto' : ''} max-w-3xl`}>
-    <p className="text-[10px] sm:text-[11px] font-mono text-cyan-400 font-bold tracking-[0.35em] sm:tracking-[0.5em] uppercase mb-4">{eyebrow}</p>
     <h2 className="text-[clamp(2rem,5.6vw,4.2rem)] font-black italic uppercase tracking-tighter leading-[0.95] text-white">
       {title} <span className="hs-grad">{accent}</span>
     </h2>

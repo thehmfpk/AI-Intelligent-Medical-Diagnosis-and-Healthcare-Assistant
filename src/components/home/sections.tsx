@@ -44,7 +44,7 @@ export const HowItWorks: React.FC<NavProps> = ({ onNavigate, onStart }) => {
   ];
   return (
     <Band tone="a" id="how">
-      <Head eyebrow="// 01 · How it works" title="Four steps." accent="One clear answer." sub="No sign-up, no waiting room. Describe how you feel and Dr.HMF does the rest." />
+      <Head title="Four steps." accent="One clear answer." sub="No sign-up, no waiting room. Describe how you feel and Dr.HMF does the rest." />
       <div className="relative">
         <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
@@ -75,7 +75,7 @@ const Chip: React.FC<{ en: string; ur?: string }> = ({ en, ur }) => (
 
 export const Features: React.FC<NavProps> = ({ onNavigate, onStart }) => (
   <Band tone="b" id="features">
-    <Head eyebrow="// 02 · What you get" title="Everything for a health check," accent="in one place." />
+    <Head title="Everything for a health check," accent="in one place." />
     <div className="grid gap-5 lg:grid-cols-12">
       {/* symptom checker */}
       <Reveal className="lg:col-span-7">
