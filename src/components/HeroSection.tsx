@@ -20,13 +20,18 @@ const HeroSection: React.FC<Props> = ({ onStart, onAqi }) => {
   );
 
   const Para = (
-    <p className="text-zinc-400 text-sm lg:text-[0.95rem] leading-relaxed max-w-[19rem] lg:max-w-[14rem] xl:max-w-[19rem] mx-auto lg:mx-0 text-center lg:text-left">
+    <p className="text-zinc-200 text-sm lg:text-[0.95rem] leading-relaxed max-w-[19rem] lg:max-w-[14rem] xl:max-w-[19rem] mx-auto lg:mx-0 text-center lg:text-left">
       Tell Dr.HMF how you feel in English, <span className="font-urdu text-white">اردو</span> or Roman Urdu. Get a clear result, a medicine guide and a printable slip.
     </p>
   );
 
   return (
-    <section className="rbhero relative w-[100vw] ml-[calc(50%-50vw)] min-h-[100svh] flex flex-col pt-24 lg:pt-28 overflow-hidden border-b border-white/5">
+    <section className="rbhero relative w-[100vw] ml-[calc(50%-50vw)] min-h-[100svh] flex flex-col pt-24 lg:pt-28 overflow-hidden">
+
+      <div className="rbmesh" aria-hidden>
+        <span className="rbmesh-blob rbmesh-a" /><span className="rbmesh-blob rbmesh-b" /><span className="rbmesh-blob rbmesh-c" />
+      </div>
+      <div className="rbhero-edge" aria-hidden /><div className="rbhero-line" aria-hidden />
 
       {/* stage */}
       <div className="relative flex-1 min-h-[440px] sm:min-h-[520px] w-full max-w-[1700px] mx-auto">
