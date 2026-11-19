@@ -23,7 +23,7 @@ export const LiveAir: React.FC<{ onAqi: () => void }> = ({ onAqi }) => {
     <Band tone="c" id="air">
       <div className="grid gap-10 lg:gap-14 lg:grid-cols-2 items-center">
         <div>
-          <Head eyebrow="// 03 · Live air quality" title="Check the air" accent="before you step out." sub="Pollution affects your lungs and heart. See today's air quality across Pakistan and anywhere in the world, then get precautions that fit your age, health and routine." />
+          <Head title="Check the air" accent="before you step out." sub="Pollution affects your lungs and heart. See today's air quality across Pakistan and anywhere in the world, then get precautions that fit your age, health and routine." />
           <ul className="space-y-3 mb-8 -mt-4">
             {[[<MapPin size={16} />, 'Live map with 27 Pakistani cities, plus search for any city'], [<HeartPulse size={16} />, 'Personal health-risk check with precautions in English and اردو'], [<Clock size={16} />, 'Cleanest hours of the next 24 hours, so you can plan outdoor time']].map(([i, t], k) => (
               <li key={k} className="flex items-start gap-3 text-sm sm:text-base text-zinc-300"><span className="mt-0.5 w-7 h-7 shrink-0 rounded-lg bg-cyan-500/15 text-cyan-300 flex items-center justify-center">{i}</span>{t}</li>
@@ -73,7 +73,7 @@ export const Trust: React.FC = () => {
   ];
   return (
     <Band tone="b" id="trust">
-      <Head eyebrow="// 04 · Built to be honest" title="Guidance you can trust," accent="limits we say out loud." />
+      <Head title="Guidance you can trust," accent="limits we say out loud." />
       <div className="grid gap-5 md:grid-cols-3">
         {items.map((x, i) => (
           <Reveal key={x.t} delay={i * 0.08} className="h-full">
@@ -111,7 +111,7 @@ const FAQ = [
 export const Faq: React.FC = () => (
   <Band tone="a" id="faq">
     <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-      <Head eyebrow="// 05 · Good to know" title="Questions," accent="answered." sub="Short, honest answers about what Dr.HMF can and cannot do." />
+      <Head title="Questions," accent="answered." sub="Short, honest answers about what Dr.HMF can and cannot do." />
       <div className="space-y-3">
         {FAQ.map(([q, a], i) => (
           <Reveal key={q} delay={i * 0.05}>
@@ -134,7 +134,6 @@ export const FinalCta: React.FC<Props> = ({ onStart, onAqi }) => (
     <Reveal>
       <div className="hs-card relative overflow-hidden !rounded-[2rem] sm:!rounded-[3rem] px-6 sm:px-12 pt-10 sm:pt-14 pb-0 grid items-end gap-6 md:grid-cols-[1.2fr_0.8fr]">
         <div className="pb-10 sm:pb-14 text-center md:text-left">
-          <p className="text-[10px] sm:text-[11px] font-mono text-cyan-400 font-bold tracking-[0.4em] uppercase mb-4">// Ready when you are</p>
           <h2 className="text-[clamp(2rem,5.4vw,4rem)] font-black italic uppercase tracking-tighter leading-[0.95]">Feeling off? <span className="hs-grad">Let’s check, together.</span></h2>
           <p className="mt-5 text-zinc-400 max-w-lg mx-auto md:mx-0 text-sm sm:text-base">Tell Dr.HMF your symptoms in your own words and get a clear, honest next step in a minute.</p>
           <div className="mt-8 flex flex-wrap gap-3 justify-center md:justify-start">
