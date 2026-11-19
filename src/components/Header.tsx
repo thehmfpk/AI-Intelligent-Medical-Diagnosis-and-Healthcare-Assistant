@@ -148,7 +148,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
           : 'py-6 bg-transparent'
         }`}
     >
-      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 xl:px-10 flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] md:gap-4">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 xl:px-10 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4">
 
         {/* --- Logo Section --- */}
         <div
@@ -179,7 +179,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
         </div>
 
         {/* --- Desktop Navigation --- */}
-        <nav className="hidden md:flex items-center bg-white/5 border border-white/10 px-2 py-1.5 rounded-full backdrop-blur-md">
+        <nav className="hidden lg:flex items-center bg-white/5 border border-white/10 px-2 py-1.5 rounded-full backdrop-blur-md">
           {navItems.map((item) => (
             <button
               key={item.id}
@@ -200,7 +200,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
         </nav>
 
         {/* --- Action Button --- */}
-        <div className="hidden md:flex items-center gap-4 justify-self-end">
+        <div className="hidden lg:flex items-center gap-4 justify-self-end">
           <ThemeToggle />
           <button
             onClick={() => setCurrentPage('analysis')}
@@ -217,7 +217,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
         </div>
 
         {/* --- Mobile Menu Toggle --- */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="lg:hidden flex items-center gap-2">
           <ThemeToggle />
           <button
             className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white"
@@ -236,7 +236,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full md:hidden bg-slate-950/95 backdrop-blur-2xl border-b border-cyan-500/20"
+            className="absolute top-full left-0 w-full lg:hidden bg-slate-950/95 backdrop-blur-2xl border-b border-cyan-500/20"
           >
             <div className="p-8 flex flex-col gap-4">
               {navItems.map((item, idx) => (
