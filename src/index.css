@@ -198,8 +198,6 @@ html.light .text-cyan-200, html.light .text-cyan-300 { color: #0e7490; }
 @media (prefers-reduced-motion: reduce) { .hero-dot, .hero-pulse-ring, .hero-sweep { animation: none; } }
 
 /* ---- robot-doctor hero ---- */
-.rbhero { background: radial-gradient(ellipse 55% 55% at 50% 70%, rgba(34,211,238,0.20), transparent 70%), radial-gradient(ellipse 45% 40% at 85% 15%, rgba(37,99,235,0.16), transparent 70%), #020204; }
-html.light .rbhero { background: radial-gradient(ellipse 55% 55% at 50% 70%, rgba(14,165,233,0.18), transparent 70%), radial-gradient(ellipse 45% 40% at 85% 15%, rgba(37,99,235,0.10), transparent 70%), #f8fafc; }
 .rb-word { background: linear-gradient(90deg, #ffffff 0%, #67e8f9 55%, #3b82f6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 html.light .rb-word { background: linear-gradient(90deg, #0b1220 0%, #0e7490 55%, #1d4ed8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .rb-title { font-size: clamp(2.5rem, 14.5vw, 5rem); line-height: 0.88; }
@@ -215,3 +213,37 @@ html.light .rb-word { background: linear-gradient(90deg, #0b1220 0%, #0e7490 55%
 @keyframes rb-read { 0%, 100% { transform: translateX(-3px); } 50% { transform: translateX(3px); } }
 .rb-read { animation: rb-read 2.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .rb-tilt, .rb-blink, .rb-pulse, .rb-bob, .rb-read { animation: none; } }
+
+/* ---- hero mesh gradient background ---- */
+.rbhero { background: #020617; }
+html.light .rbhero { background: #eef6ff; }
+.rbmesh { position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  background:
+    radial-gradient(at 10% 14%, rgba(6,182,212,0.60) 0, transparent 42%),
+    radial-gradient(at 92% 8%, rgba(59,130,246,0.55) 0, transparent 44%),
+    radial-gradient(at 86% 88%, rgba(124,58,237,0.50) 0, transparent 48%),
+    radial-gradient(at 6% 90%, rgba(16,185,129,0.38) 0, transparent 44%),
+    radial-gradient(at 50% 62%, rgba(34,211,238,0.20) 0, transparent 52%),
+    linear-gradient(160deg, #020617 0%, #071538 52%, #040b20 100%); }
+html.light .rbmesh {
+  background:
+    radial-gradient(at 10% 14%, rgba(34,211,238,0.60) 0, transparent 44%),
+    radial-gradient(at 92% 8%, rgba(96,165,250,0.60) 0, transparent 46%),
+    radial-gradient(at 86% 88%, rgba(167,139,250,0.50) 0, transparent 50%),
+    radial-gradient(at 6% 90%, rgba(110,231,183,0.50) 0, transparent 46%),
+    radial-gradient(at 50% 62%, rgba(255,255,255,0.80) 0, transparent 55%),
+    linear-gradient(160deg, #e6f4ff 0%, #dbeafe 52%, #e0f2fe 100%); }
+.rbmesh::after { content: ''; position: absolute; inset: 0; opacity: 0.10; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+.rbmesh-blob { position: absolute; border-radius: 9999px; filter: blur(70px); opacity: 0.55; will-change: transform; }
+.rbmesh-a { width: 42vw; height: 42vw; left: -8vw; top: 10%; background: #06b6d4; animation: rbmesh-a 20s ease-in-out infinite alternate; }
+.rbmesh-b { width: 38vw; height: 38vw; right: -6vw; top: -8%; background: #3b82f6; animation: rbmesh-b 24s ease-in-out infinite alternate; }
+.rbmesh-c { width: 36vw; height: 36vw; right: 10vw; bottom: -14%; background: #7c3aed; animation: rbmesh-c 28s ease-in-out infinite alternate; }
+html.light .rbmesh-blob { opacity: 0.35; }
+@keyframes rbmesh-a { to { transform: translate(14vw, 10vh) scale(1.15); } }
+@keyframes rbmesh-b { to { transform: translate(-12vw, 14vh) scale(1.2); } }
+@keyframes rbmesh-c { to { transform: translate(-16vw, -10vh) scale(0.9); } }
+.rbhero-edge { position: absolute; left: 0; right: 0; bottom: 0; height: 90px; pointer-events: none; background: linear-gradient(to bottom, transparent, rgba(2,6,23,0.85)); }
+html.light .rbhero-edge { background: linear-gradient(to bottom, transparent, rgba(248,250,252,0.9)); }
+.rbhero-line { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(34,211,238,0.7), rgba(59,130,246,0.7), transparent); }
+@media (prefers-reduced-motion: reduce) { .rbmesh-blob { animation: none; } }
