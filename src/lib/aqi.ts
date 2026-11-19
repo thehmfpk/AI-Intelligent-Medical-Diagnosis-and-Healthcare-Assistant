@@ -64,3 +64,31 @@ export async function fetchReadings(points: { lat: number; lon: number }[], sign
     return { aqi: Math.round(c.us_aqi), pm25: c.pm2_5, pm10: c.pm10, time: c.time };
   });
 }
+
+export interface Place { name: string; sub: string; lat: number; lon: number; }
+
+/** Looks up places worldwide by name (Open-Meteo geocoding, no key). */
+export async function searchPlaces(q: string, signal?: AbortSignal): Promise<Place[]> {
+  const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=en&format=json`, { signal });
+  if (!res.ok) throw new Error(`Place search returned ${res.status}`);
+  const json = await res.json();
+  const list: { name: string; latitude: number; longitude: number; country?: string; admin1?: string }[] = json.results ?? [];
+  return list.map(r => ({ name: r.name, sub: [r.admin1, r.country].filter(Boolean).join(', '), lat: +r.latitude.toFixed(3), lon: +r.longitude.toFixed(3) }));
+}
+
+export interface HourPoint { time: string; aqi: number; }
+
+/** Hourly US AQI for the next 24 hours at a place (local time of that place). */
+export async function fetchForecast(lat: number, lon: number, signal?: AbortSignal): Promise<HourPoint[]> {
+  const url = `${URL_BASE}?latitude=${lat}&longitude=${lon}&current=us_aqi&hourly=us_aqi&forecast_days=2&timezone=auto`;
+  const res = await fetch(url, { signal });
+  if (!res.ok) throw new Error(`Forecast service returned ${res.status}`);
+  const j = await res.json();
+  const times: string[] = j.hourly?.time ?? [];
+  const vals: (number | null)[] = j.hourly?.us_aqi ?? [];
+  const nowHour: string = (j.current?.time ?? times[0] ?? '').slice(0, 13);
+  const start = Math.max(0, times.findIndex(t => t.slice(0, 13) >= nowHour));
+  const out: HourPoint[] = [];
+  for (let i = start; i < Math.min(times.length, start + 24); i++) if (vals[i] != null) out.push({ time: times[i], aqi: Math.round(vals[i] as number) });
+  return out;
+}
