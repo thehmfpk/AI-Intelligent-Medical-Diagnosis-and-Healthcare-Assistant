@@ -96,7 +96,7 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <HomePage onStart={handleStartAnalysis} onAqi={() => setCurrentPage('aqi')} />
+              <HomePage onStart={handleStartAnalysis} onAqi={() => setCurrentPage('aqi')} onNavigate={setCurrentPage} />
             </motion.div>
           )}
 
