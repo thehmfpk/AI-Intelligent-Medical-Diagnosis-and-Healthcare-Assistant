@@ -198,10 +198,12 @@ html.light .text-cyan-200, html.light .text-cyan-300 { color: #0e7490; }
 @media (prefers-reduced-motion: reduce) { .hero-dot, .hero-pulse-ring, .hero-sweep { animation: none; } }
 
 /* ---- robot-doctor hero ---- */
-.rbhero { background: radial-gradient(ellipse 60% 55% at 50% 62%, rgba(56,189,248,0.38), transparent 70%), linear-gradient(180deg, #0a1440 0%, #14258a 55%, #1f3fc2 100%); }
-html.light .rbhero { background: radial-gradient(ellipse 60% 55% at 50% 62%, rgba(255,255,255,0.75), transparent 70%), linear-gradient(180deg, #cfe3ff 0%, #9cc3ff 60%, #6ea2f5 100%); }
-.rb-word { background: linear-gradient(180deg, #ffffff 30%, #bcd0ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-html.light .rb-word { background: linear-gradient(180deg, #0b1b4d 20%, #1e3a9a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rbhero { background: radial-gradient(ellipse 55% 50% at 50% 66%, rgba(255,214,102,0.30), transparent 70%), radial-gradient(ellipse 50% 45% at 20% 20%, rgba(255,106,176,0.28), transparent 70%), linear-gradient(165deg, #1a1067 0%, #3a2cc9 42%, #7a35de 78%, #d94fb5 118%); }
+html.light .rbhero { background: radial-gradient(ellipse 55% 50% at 50% 66%, rgba(255,255,255,0.85), transparent 70%), linear-gradient(165deg, #ffe0f0 0%, #e1d6ff 48%, #bfe2ff 100%); }
+.rb-word { background: linear-gradient(180deg, #ffffff 25%, #ffd6f0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+html.light .rb-word { background: linear-gradient(180deg, #1a1067 10%, #6d28d9 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rb-title { font-size: clamp(2.5rem, 14.5vw, 5rem); line-height: 0.88; }
+@media (min-width: 640px) { .rb-title { font-size: min(6.7vw, 7.6rem); line-height: 1; } }
 @keyframes rb-tilt { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
 @keyframes rb-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
 @keyframes rb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
