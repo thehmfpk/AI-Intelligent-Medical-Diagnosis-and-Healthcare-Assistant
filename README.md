@@ -7,7 +7,7 @@
 
 Dr.HMF is a full-stack artificial intelligence healthcare system. A user describes how they feel, by **typing or speaking in English, Urdu or Roman Urdu**, and the system notes the symptoms, predicts the most likely disease, and shows a medication, diet, workout and precaution plan. The user can then print a medical slip and search for a pharmacy that sells the suggested medicines.
 
-The project combines machine learning (a trained neural network on 96,088 records and 100 diseases), a modern React interface with **light and dark themes**, a Flask prediction API, and a **conversational assistant** that talks to the user like a doctor's assistant.
+The project combines machine learning (a trained neural network on 96,088 records and 100 diseases), a modern React interface with **light and dark themes** that works from small phones to large desktops, a Flask prediction API, a **conversational assistant** that talks to the user like a doctor's assistant, and a **live air-quality map with a personal health-risk check**.
 
 > **Educational project.** Dr.HMF gives a preliminary, pattern-based estimate only. It is not a medical diagnosis and does not replace a licensed doctor. In an emergency, call Rescue 1122 or Edhi 115 (Pakistan) or go to the nearest hospital.
 
@@ -20,19 +20,23 @@ The project combines machine learning (a trained neural network on 96,088 record
 3. [Key Features](#key-features)
 4. [Conversational AI Assistant](#conversational-ai-assistant-urdu-roman-urdu-and-english)
 5. [Bilingual Symptoms](#bilingual-symptoms-english-and-urdu)
-6. [Treatment, Print Slip and Pharmacy Finder](#treatment-print-slip-and-pharmacy-finder)
-7. [Light and Dark Mode](#light-and-dark-mode)
-8. [Technologies Used](#technologies-used)
-9. [System Architecture](#system-architecture)
-10. [Project Structure](#project-structure)
-11. [Machine Learning Pipeline](#machine-learning-pipeline)
-12. [Installation Guide](#installation-guide)
-13. [Deployment Workflow](#deployment-workflow)
-14. [Known Limitations](#known-limitations)
-15. [Future Improvements](#future-improvements)
-16. [Security, Privacy and Safety](#security-privacy-and-safety)
-17. [Disclaimer](#disclaimer)
-18. [Author, License and Acknowledgements](#author)
+6. [Home Page and Hero](#home-page-and-hero)
+7. [Analysis, AI Doctor and Prediction](#analysis-ai-doctor-and-prediction)
+8. [Treatment, Print Slip and Pharmacy Finder](#treatment-print-slip-and-pharmacy-finder)
+9. [Live AQI Map and Health Risk Check](#live-aqi-map-and-health-risk-check)
+10. [Light and Dark Mode](#light-and-dark-mode)
+11. [Responsive Design and Accessibility](#responsive-design-and-accessibility)
+12. [Technologies Used](#technologies-used)
+13. [System Architecture](#system-architecture)
+14. [Project Structure](#project-structure)
+15. [Machine Learning Pipeline](#machine-learning-pipeline)
+16. [Installation Guide](#installation-guide)
+17. [Deployment Workflow](#deployment-workflow)
+18. [Known Limitations](#known-limitations)
+19. [Future Improvements](#future-improvements)
+20. [Security, Privacy and Safety](#security-privacy-and-safety)
+21. [Disclaimer](#disclaimer)
+22. [Author, License and Acknowledgements](#author)
 
 ---
 
@@ -46,11 +50,17 @@ The project combines machine learning (a trained neural network on 96,088 record
 | **Bilingual symptoms** | All 230 symptoms shown in English, Urdu, or both, searchable in any script |
 | **Safety layer** | Emergency and self-harm detection with Rescue 1122 / Edhi 115 |
 | **Light and dark mode** | Sun/moon toggle, remembered between visits, no flash on load |
-| **Live AQI map** | Interactive map of air quality across 27 Pakistani cities (US AQI, PM2.5, PM10) with colour-coded markers, health advice in English and Urdu, and a "My location" reading |
+| **New hero** | Full-screen hero with a large "HEALTHCARE COMPANION" title, an animated robot doctor reading a medical report, live-count stat chips and a mesh-gradient background (dark and light) |
+| **Redesigned home page** | Ticker, How it works, Features, Live air quality, "Built to be honest", FAQ and a closing call to action, each with its own gradient mood; the old placeholder sections with unsupported claims were removed |
+| **Header and footer redesign** | Logo and name on the left, navigation in the centre, actions on the right; hamburger menu below 1024 px; footer with real links only |
+| **Live AQI map** | Interactive map of air quality across 27 Pakistani cities (US AQI, PM2.5, PM10) with colour-coded markers, health advice in English and Urdu and a "My location" reading |
+| **Search any city** | Worldwide place search on the AQI page (Open-Meteo geocoding) with a live reading and marker for the chosen place |
+| **Health risk check** | The user enters age group, conditions, daily activity, smoking, mask and purifier; the page returns a personal risk level, precautions in English and Urdu, the cleanest hours of the next 24 hours and when to seek help |
+| **Map layering fix** | The map no longer slides over the navbar when the page scrolls |
 | **Let's Begin Checkup** | New entry button; the language is detected automatically (no language switch) |
 | **AI doctor guide** | An animated doctor on the Analysis page looks at the user, guides the next symptom, and has an optional voice |
 | **Prediction animation** | "Done" plays a doctor-typing animation and opens the result |
-| **Ranked prediction** | Top conditions with a symptom-match score, editable symptoms, and a re-run that does not reload the site |
+| **Ranked prediction** | Top conditions ranked by symptom match, editable symptoms, and a re-run that does not reload the site |
 | **Medicine map and follow-up** | What each suggested medicine is for, with a morning / afternoon / evening / night plan |
 | **Treatment redesign** | Medicine cards with illustrations, nearby pharmacy map, and a one-page A4 medical slip |
 | **Voice symptom entry** | A mic button on the Analysis search bar and the prediction editor: speak in English, Urdu or Roman Urdu and the symptoms are added automatically (Chrome / Edge) |
@@ -95,7 +105,7 @@ One click prints a slip with the findings and the plan.
 
 ## Pharmacy Finder
 
-The **Global Pharmacy** button opens a search for pharmacies near the user for the suggested medicines.
+An embedded map on the Treatment page shows pharmacies, hospitals, clinics or laboratories near a typed city or the device location. It shows where to look; it cannot know a shop's stock, so the page asks the user to call first.
 
 ## Safety Layer
 
@@ -104,6 +114,10 @@ Serious symptoms and self-harm wording are detected and answered with an emergen
 ## Light and Dark Themes
 
 The entire interface supports both themes.
+
+## Live Air Quality and Health Risk
+
+A live AQI map for Pakistan and any searched city, plus a personal health-risk check with precautions. See [Live AQI Map and Health Risk Check](#live-aqi-map-and-health-risk-check).
 
 ## Full Stack Architecture
 
@@ -204,6 +218,45 @@ The assistant is a **rule-based natural-language layer written as pure functions
 
 ---
 
+# Home Page and Hero
+
+The home page is built from one full-width hero and a set of themed sections. Every section has its own mesh-gradient mood in the site's cyan, blue, indigo and emerald palette, with matching pastel versions in light mode.
+
+## Hero
+
+- A full-screen (100% viewport height) hero with no side gaps, a large **HEALTHCARE COMPANION** title that stays on one line on desktop, and an **original SVG robot doctor** (`src/components/RobotDoctor.tsx`) that reads a medical report on a tablet, blinks and tilts its head.
+- Two stat chips show real numbers from the project data (230 symptoms, 100 conditions).
+- A slowly moving mesh-gradient background with light grain, a soft bottom fade and a glow line that separates it from the next section.
+- On short laptop screens the hero grows instead of clipping; on phones the title wraps to two lines and the text and buttons sit under the robot.
+
+## Sections below the hero
+
+| Section | What it shows |
+|---|---|
+| **Ticker** | A slow scrolling strip of what the app offers (pauses on hover and is static with reduced motion) |
+| **How it works** | Four step cards (tell, match, plan, stay safe), each linking to the right page |
+| **Features** | Symptom checker, languages, voice input, AI chat, medicine guide and slip |
+| **Live air quality** | Real AQI cards for Lahore, Karachi, Islamabad and Peshawar, with a button to the map |
+| **Built to be honest** | Not a diagnosis, no medicine doses, your data stays with you, and an emergency notice |
+| **FAQ** | Six short answers about what Dr.HMF can and cannot do |
+| **Final call to action** | Start a checkup or open the AQI map |
+
+The home page makes no claims the product cannot back up: earlier placeholder text about data volumes, encryption and "medical nodes" was removed, and the footer links only to real pages.
+
+Files: `src/components/HeroSection.tsx`, `src/components/home/ui.tsx`, `src/components/home/sections.tsx`, `src/components/home/sections2.tsx`, `src/components/Footer.tsx`.
+
+---
+
+# Analysis, AI Doctor and Prediction
+
+- **Let's Begin Checkup** opens the Analysis page; the display language is detected automatically, so there is no language switch to operate.
+- An **animated doctor** looks at the user (the pupils follow the pointer), reacts while the user types and can speak guidance aloud.
+- Symptoms are searched in English, Urdu or Roman Urdu, or added by voice with the mic button (Chrome / Edge).
+- **Done** plays a short doctor-typing animation, then the **Prediction** page ranks the closest conditions by how well the symptoms match.
+- On the Prediction page the symptoms can be edited (including by voice) and the prediction re-run without reloading the site. A medicine map explains what each suggested medicine is for, and a follow-up timeline groups the plan into morning, afternoon, evening and night.
+
+---
+
 # Treatment, Print Slip and Pharmacy Finder
 
 After a prediction, the **Treatment** page shows:
@@ -223,11 +276,42 @@ The page now contains:
 
 Honest limits: the pictures are illustrations of a medicine *type*, not branded products; no doses (mg) are printed, because a doctor must set them; the map shows where to look but cannot know a shop's stock, so the page tells the user to call first; and the slip is information, not a prescription, until a licensed doctor signs it.
 
-# Live AQI Map
+# Live AQI Map and Health Risk Check
 
-The **AQI Map** page (navigation and home page) shows current air quality for 27 cities on an interactive Leaflet map. Markers are coloured by the US AQI scale; selecting a city shows its AQI, PM2.5, PM10 and plain health advice in English and Urdu. **My location** adds a reading for the user's position, and data refreshes every 10 minutes.
+The **AQI Map** page (navigation, home page and footer) combines a live map with a personal health-risk tool.
 
-Data comes from the free Open-Meteo air-quality API (a modelled CAMS estimate, so it can differ from a ground monitor); map tiles are from OpenStreetMap. No API key is needed. See `src/lib/aqi.ts` and `src/components/AqiMapPage.tsx`.
+## Live map
+
+- Current air quality for **27 Pakistani cities** on an interactive Leaflet map, with markers coloured by the US AQI scale
+- Selecting a city shows its AQI, PM2.5, PM10 and plain health advice in English and Urdu, and a list ranks the cities from worst to best
+- **Search any city in the world** (Open-Meteo geocoding) to get a live reading and a marker for it
+- **My location** adds a reading for the user's position
+- Data refreshes every 10 minutes
+- The map sits in its own stacking context, so it never paints over the navbar when the page scrolls
+
+## My health risk check
+
+Below the map, the user enters:
+
+- age group (child, teen / adult, older adult)
+- optional health conditions (asthma / COPD, heart disease / high blood pressure, pregnancy, diabetes, allergies, recent chest infection)
+- today's activity (mostly indoors, some time outside, outdoor work or exercise)
+- smoking, whether they have an N95 mask and whether they have an air purifier
+
+The page then shows, for the place selected on the map:
+
+- a **personal risk level** (low, moderate, high, very high, severe) and score, calculated from today's AQI adjusted for age, conditions and activity (`src/lib/healthRisk.ts`)
+- **precautions** that fit the answers (mask type, windows, exercise, purifier, inhaler and routine reminders, hydration, what to avoid), each in English and Urdu
+- the **next 24 hours** of AQI as a small chart and the **cleanest three hours** for outdoor errands
+- **when to get help**, with a shortcut to start a symptom checkup
+
+The answers stay in the browser tab and are never saved or sent anywhere; only a place's coordinates are used to fetch air data. The score is a simple guide, not a medical measurement, and the page contains no medicine doses.
+
+## Data and files
+
+Data comes from the free Open-Meteo air-quality and geocoding APIs (a modelled CAMS estimate, so it can differ from a ground monitor). Map tiles are from OpenStreetMap. No API key is needed.
+
+Files: `src/lib/aqi.ts`, `src/lib/healthRisk.ts`, `src/components/AqiMapPage.tsx`, `src/components/AqiHealthCheck.tsx`.
 
 # Light and Dark Mode
 
@@ -237,6 +321,15 @@ A **sun/moon button** in the header (desktop and mobile) switches the theme.
 - The choice is stored in the browser and applied **before first paint**, so there is no flash
 - The default is dark
 - Implementation: the light theme remaps the neutral colour palette under `html.light` in `src/index.css`, controlled by `src/lib/useTheme.ts` and `src/components/ThemeToggle.tsx`
+
+# Responsive Design and Accessibility
+
+- Layouts were checked at phone (320 to 390 px), tablet (768 px), laptop (1024 to 1366 px) and large desktop (1920 px) widths in both themes, with no horizontal scrolling
+- The hero fills exactly one screen and grows on short screens instead of clipping content
+- Below 1024 px the header switches to a hamburger menu
+- Gradient headings keep their last letters visible when they wrap onto a second line
+- Animations respect the *reduce motion* setting
+- Controls have labels and the keyboard focus order is preserved; form groups, results and alerts use proper roles
 
 ---
 
@@ -252,6 +345,8 @@ A **sun/moon button** in the header (desktop and mobile) switches the theme.
 - Lucide icons
 - EmailJS (contact form)
 - Web Speech API (voice input and voice replies)
+- Leaflet and OpenStreetMap tiles (maps)
+- Open-Meteo air-quality and geocoding APIs (live AQI, forecast and place search; no API key)
 
 ## Backend
 
@@ -339,22 +434,42 @@ AI-Intelligent-Medical-Diagnosis-and-Healthcare-Assistant/
 ├── src/
 │   ├── components/
 │   │   ├── HomePage.tsx
-│   │   ├── AnalysisPage.tsx     # symptom picker, bilingual, multi-script search
+│   │   ├── HeroSection.tsx      # full-screen hero with the robot doctor
+│   │   ├── RobotDoctor.tsx      # original SVG robot illustration
+│   │   ├── home/                # ticker, how it works, features, live air, trust, FAQ, CTA
+│   │   │   ├── ui.tsx
+│   │   │   ├── sections.tsx
+│   │   │   └── sections2.tsx
+│   │   ├── AnalysisPage.tsx     # symptom picker, bilingual, multi-script and voice search
+│   │   ├── DoctorAvatar.tsx     # animated AI doctor
+│   │   ├── PredictionAnimation.tsx
 │   │   ├── ChatAssistant.tsx    # voice and text chat interface
-│   │   ├── ResultPage.tsx
-│   │   ├── MedicationPage.tsx   # plans, print slip, pharmacy finder
+│   │   ├── ResultPage.tsx       # ranked prediction, editable symptoms
+│   │   ├── FollowUpTimeline.tsx
+│   │   ├── MedicationPage.tsx   # medicine cards, nearby map, print slip
+│   │   ├── MedicineImage.tsx
+│   │   ├── AqiMapPage.tsx       # live AQI map, city search
+│   │   ├── AqiHealthCheck.tsx   # personal health-risk check
 │   │   ├── ContactPage.tsx
 │   │   ├── Header.tsx
 │   │   ├── Footer.tsx
-│   │   ├── LanguageToggle.tsx   # English / اردو / both
+│   │   ├── MicButton.tsx
 │   │   ├── ThemeToggle.tsx      # light / dark
-│   │   └── SymptomName.tsx
+│   │   ├── SymptomName.tsx
+│   │   └── LanguageToggle.tsx   # no longer used (language is detected automatically)
 │   ├── data/
 │   │   ├── medicalData.ts
 │   │   └── symptomTranslations.ts   # Urdu names and aliases, 230 symptoms
 │   ├── lib/
 │   │   ├── symptomMatcher.ts    # Urdu / Roman Urdu / English symptom extraction
 │   │   ├── chatEngine.ts        # dialogue logic
+│   │   ├── predictor.ts         # ranks diseases from symptoms
+│   │   ├── medicineGuide.ts     # class-level medicine information (no doses)
+│   │   ├── medicalSlip.ts       # printable A4 slip
+│   │   ├── aqi.ts               # live AQI, forecast and place search
+│   │   ├── healthRisk.ts        # personal risk level and precautions
+│   │   ├── autoLanguage.ts
+│   │   ├── useSpeechInput.ts    # Web Speech API hook
 │   │   ├── usePersistentState.ts
 │   │   └── useTheme.ts
 │   ├── App.tsx
@@ -506,11 +621,12 @@ feature branch → push to GitHub → Vercel preview → pull request → merge 
 # Known Limitations
 
 - **The website does not yet call the trained model.** It currently uses a browser-side symptom-overlap lookup; the trained network (88.78% test accuracy) sits in the Flask backend.
-- **Result tiles are static.** The "90.2% accuracy" and "12 ms" values on the result page are fixed text, not measured live.
 - **Urdu translations need review.** The 230 Urdu symptom names should be checked by a native speaker.
 - **The assistant is rule-based.** It understands the phrases in its dictionary and typo variants, not unlimited free language.
 - **Voice depends on the browser.** Speech recognition quality and Urdu support vary between browsers and devices.
-- **Pharmacy search is a generic web search**, not a live stock or map lookup.
+- **The pharmacy map shows where to look, not what is in stock.** Users should call before going.
+- **Air quality is a modelled estimate** (Open-Meteo / CAMS) and can differ from a ground monitor; the health-risk score is a simple guide, not a medical measurement.
+- **Medicine information is general and class-level.** No doses are shown, and the printed slip is not a prescription.
 - **Prediction is pattern-based and educational**, not a clinical diagnosis. Rare or weakly represented diseases score lower.
 
 ---
@@ -523,7 +639,9 @@ feature branch → push to GitHub → Vercel preview → pull request → merge 
 - Medical report analysis
 - User authentication and medical history
 - Cloud database integration
-- Pharmacy finder with real maps and stock lookup
+- Real pharmacy stock lookup (needs a data partner)
+- Air-quality readings from ground monitors alongside the model
+- Saving a health-risk profile on the device (opt-in)
 - More languages (for example Punjabi and Sindhi)
 - Model calibration and deep learning optimisation
 - Mobile application version
@@ -534,6 +652,8 @@ feature branch → push to GitHub → Vercel preview → pull request → merge 
 
 - Secrets are kept in environment variables, not in the repository
 - Chat and symptom data stay in the browser (session and local storage); the assistant sends nothing to a server
+- The health-risk answers are not stored or sent anywhere; air-quality and city-search requests send only coordinates or the searched place name to Open-Meteo
+- Only the last five prediction results (disease name, date, symptom count) are kept in local storage on the user's device
 - API-based architecture with backend separation and input processing
 - Emergency and self-harm detection with local emergency numbers
 - A disclaimer on results
@@ -578,6 +698,7 @@ www.hafizmfaizan.site
 ai machine-learning healthcare medical-ai react flask python fullstack
 artificial-intelligence disease-prediction tensorflow vite chatbot
 urdu roman-urdu voice-assistant dark-mode light-mode
+aqi air-quality leaflet health-risk responsive-design
 ```
 
 ---
@@ -599,4 +720,4 @@ This project is licensed under the MIT License.
 
 # Conclusion
 
-Dr.HMF brings machine learning, a conversational assistant that understands English, Urdu and Roman Urdu by text and voice, and a responsive light and dark interface into one healthcare platform. It guides a user from describing symptoms, to a preliminary prediction, to a treatment plan, a printable slip and a pharmacy search, with safety checks and clear limits built in.
+Dr.HMF brings machine learning, a conversational assistant that understands English, Urdu and Roman Urdu by text and voice, and a responsive light and dark interface into one healthcare platform. It guides a user from describing symptoms, to a preliminary prediction, to a treatment plan, a printable slip and a pharmacy search, with safety checks and clear limits built in. A live air-quality map and a personal health-risk check extend that care to the air the user breathes every day.
