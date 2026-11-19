@@ -196,3 +196,18 @@ html.light .text-cyan-200, html.light .text-cyan-300 { color: #0e7490; }
 .hero-pulse-ring { animation: hero-pulse-ring 3s ease-out infinite; }
 .hero-sweep { animation: hero-sweep 5s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .hero-dot, .hero-pulse-ring, .hero-sweep { animation: none; } }
+
+/* ---- robot-doctor hero ---- */
+.rbhero { background: radial-gradient(ellipse 60% 55% at 50% 62%, rgba(56,189,248,0.38), transparent 70%), linear-gradient(180deg, #0a1440 0%, #14258a 55%, #1f3fc2 100%); }
+html.light .rbhero { background: radial-gradient(ellipse 60% 55% at 50% 62%, rgba(255,255,255,0.75), transparent 70%), linear-gradient(180deg, #cfe3ff 0%, #9cc3ff 60%, #6ea2f5 100%); }
+.rb-word { background: linear-gradient(180deg, #ffffff 30%, #bcd0ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+html.light .rb-word { background: linear-gradient(180deg, #0b1b4d 20%, #1e3a9a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@keyframes rb-tilt { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+@keyframes rb-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes rb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes rb-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.rb-tilt { animation: rb-tilt 5s ease-in-out infinite; }
+.rb-blink { transform-box: fill-box; transform-origin: center; animation: rb-blink 4.5s infinite; }
+.rb-pulse { animation: rb-pulse 1.6s ease-in-out infinite; }
+.rb-bob { animation: rb-bob 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .rb-tilt, .rb-blink, .rb-pulse, .rb-bob { animation: none; } }
