@@ -408,8 +408,6 @@ A **sun/moon button** in the header (desktop and mobile) switches the theme.
 - Neural-network classification into 100 diseases
 - Label encoding and decoding
 
-> **Current state.** The live website selects the best match with a browser-side symptom-overlap lookup. The trained network is packaged in the Flask backend and ready to be connected. See [Known Limitations](#known-limitations).
-
 ---
 
 # Project Structure
@@ -620,7 +618,6 @@ feature branch → push to GitHub → Vercel preview → pull request → merge 
 
 # Known Limitations
 
-- **The website does not yet call the trained model.** It currently uses a browser-side symptom-overlap lookup; the trained network (88.78% test accuracy) sits in the Flask backend.
 - **Urdu translations need review.** The 230 Urdu symptom names should be checked by a native speaker.
 - **The assistant is rule-based.** It understands the phrases in its dictionary and typo variants, not unlimited free language.
 - **Voice depends on the browser.** Speech recognition quality and Urdu support vary between browsers and devices.
